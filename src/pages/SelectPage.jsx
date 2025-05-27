@@ -26,7 +26,7 @@ const SelectPage = () => {
         <Item onClick={() => navigate("/Slope")}>
         <Badge>탐구3</Badge>
           <h4><span>빗면</span>을 이용해<br/>물건 들기</h4>
-          <p>경사면을 따라 물체를 들어 올려 보아요.</p>
+          <p>경사면을 따라 물체를<br/>들어 올려 보아요.</p>
           <div className="img">이미지</div>
         </Item>
       </Flex>
@@ -44,6 +44,7 @@ const Title = styled.h2`
 `;
 
 const Flex = styled.div`
+  width: 80%;
   display: flex;
   gap: 30px;
 `;
@@ -61,7 +62,7 @@ const Item = styled.div`
     align-items: center;
     justify-content: center;
     text-align: center;
-    width: 400px;
+    width: 100%;
     height: 300px;
     background: #f1f1f1;
     border-radius: 20px;
@@ -74,8 +75,8 @@ const Item = styled.div`
   }
 
   h4 {
-    margin: 30px;
-    font-size: 34px;
+    margin: 30px 0;
+    font-size: 2rem;
     font-family: 'HakgyoansimDunggeunmisoTTF-R';
     span {
       font-family: 'HakgyoansimDunggeunmisoTTF-B';
@@ -89,7 +90,7 @@ const Button = styled.button`
   padding: 12px 28px;
   background: #faf6c1;
   border-radius: 50px;
-  font-size: 20px;
+  font-size: 1.2rem;
 `;
 const Badge = styled.span`
   border-radius: 38px;

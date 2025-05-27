@@ -69,7 +69,8 @@ const Content = styled.div`
   }
 `;
 const Button = styled.button`
-  width: 398px;
+  max-width: 398px;
+  width: 100%;
   height: 118px;
   border-radius: 56px;
   background: #1499ff;

@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import click from "../assets/images/left-click.png"
+import { motion } from "framer-motion";
 
 const Laboratory = () => {
+  const navigate = useNavigate();
+
   return (
     <Wrap>
       <Flex>
@@ -9,7 +14,7 @@ const Laboratory = () => {
           <Badge>실험실</Badge>
           <p>힘과 우리의 생활 - 탐구 1 &lt;양팔저울로 무게 비교하기&gt;</p>
         </Item>
-        <Button>
+        <Button onClick={() => navigate("/select")}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="23"
@@ -26,9 +31,7 @@ const Laboratory = () => {
         </Button>
       </Flex>
 
-      <Textwrap>
-        Q. 물체를 위로 들어 올리는데 필요한 힘이 얼마인지 확인해 보세요.
-      </Textwrap>
+      {/* Content */}
     </Wrap>
   );
 };
@@ -61,7 +64,7 @@ const Item = styled.div`
   align-items: center;
 
   p {
-    color: #0C3554;
+    color: #0c3554;
     font-size: 1.125rem;
   }
 `;
@@ -85,18 +88,4 @@ const Badge = styled.div`
   background: #0c3554;
   color: #fff;
   padding: 6px 12px;
-`;
-const Textwrap = styled.div`
-  background: #fff;
-  border-radius: 100px;
-  border: 2px solid #65a8e3;
-  box-shadow: 0px 2px 0px 0px #428bcb;
-  padding: 10px;
-  width: 60%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 40px auto;
-  color: #236daf;
-  font-size: 1rem;
 `;

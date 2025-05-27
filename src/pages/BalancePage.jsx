@@ -1,277 +1,234 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
-import wood from '../assets/images/wood.png'
-import metal from '../assets/images/metal.png'
+import React, { useState } from "react";
+import styled from "styled-components";
+import woodImg from "../assets/images/wood.png";
+import metalImg from "../assets/images/metal.png";
+import balanceImg from "../assets/images/balance.png";
+import balanceScaleImg from "../assets/images/balance_scale.png";
+import balanceArmImg from "../assets/images/balance_arm.png";
+import { useNavigate } from "react-router-dom";
 
 const BalancePage = () => {
-  // 저울 양쪽에 놓인 물체
   const [leftItem, setLeftItem] = useState(null);
   const [rightItem, setRightItem] = useState(null);
-  
-  // 드래그 중인 물체
-  const [draggingItem, setDraggingItem] = useState(null);
-  
+
+  const handleDrop = (side, item) => {
+    if (side === "left") setLeftItem(item);
+    else setRightItem(item);
+  };
+
+  const isComplete = leftItem && rightItem;
+  const isMetalHeavier = leftItem === "wood" && rightItem === "metal";
   const navigate = useNavigate();
 
-  // 무게 정의
-  const weights = {
-    wood: 1,  // 나무 무게: 1kg
-    metal: 3  // 철 무게: 3kg
-  };
-  
-  // 저울 각도 계산
-  const calculateBalance = () => {
-    const leftWeight = leftItem ? weights[leftItem] : 0;
-    const rightWeight = rightItem ? weights[rightItem] : 0;
-    
-    // 무게 차이에 따라 각도 계산 (최대 ±20도)
-    // 무거운 쪽이 아래로 기울게 수정 (부호 반대로)
-    const diff = rightWeight - leftWeight;
-    return Math.min(Math.max(diff * 2, -20), 20);
-  };
-  
-  // 드래그 시작 핸들러
-  const handleDragStart = (item) => {
-    setDraggingItem(item);
-    
-    // 이미 저울에 있는 경우 제거
-    if (leftItem === item) setLeftItem(null);
-    if (rightItem === item) setRightItem(null);
-  };
-  
-  // 드래그 종료 핸들러
-  const handleDragEnd = (event, info, item) => {
-    // 드롭 위치 확인
-    const leftScaleElement = document.getElementById('left-scale');
-    const rightScaleElement = document.getElementById('right-scale');
-    
-    if (leftScaleElement && rightScaleElement) {
-      const leftScaleRect = leftScaleElement.getBoundingClientRect();
-      const rightScaleRect = rightScaleElement.getBoundingClientRect();
-      
-      const { point } = info;
-      
-      // 왼쪽 접시에 드롭
-      if (
-        point.x >= leftScaleRect.left && 
-        point.x <= leftScaleRect.right && 
-        point.y >= leftScaleRect.top && 
-        point.y <= leftScaleRect.bottom
-      ) {
-        setLeftItem(item);
-      }
-      // 오른쪽 접시에 드롭
-      else if (
-        point.x >= rightScaleRect.left && 
-        point.x <= rightScaleRect.right && 
-        point.y >= rightScaleRect.top && 
-        point.y <= rightScaleRect.bottom
-      ) {
-        setRightItem(item);
-      }
-    }
-    
-    setDraggingItem(null);
-  };
-  
-  // 저울 각도
-  const balanceAngle = calculateBalance();
-  
   return (
-    <div className='container'>
-      <Button onClick={() => navigate('/select')}>다른 활동 선택하기</Button>
-      {/* <Title>양팔저울 실험</Title> */}
-      
-      <BalanceContainer>
-        <BalanceBar
-          style={{ originX: 0.5, originY: 0.5 }}
-          animate={{ rotate: balanceAngle }}
-          transition={{ 
-            type: "spring", 
-            stiffness: 100, 
-            damping: 10 
-          }}
-        >
-          <ScalePlate id="left-scale" side="left">
-            <ScalePlateBase />
-            <ScalePlateCircle>
-              {leftItem && (
-                <Item 
-                  type={leftItem}
-                  style={{ width: '2rem', height: '2rem' }}
-                />
-              )}
-            </ScalePlateCircle>
-          </ScalePlate>
-          
-          <ScalePlate id="right-scale" side="right">
-            <ScalePlateBase />
-            <ScalePlateCircle>
-              {rightItem && (
-                <Item 
-                  type={rightItem}
-                  style={{ width: '2rem', height: '2rem' }}
-                />
-              )}
-            </ScalePlateCircle>
-          </ScalePlate>
-        </BalanceBar>
-        
-        <ScaleBase />
-        <ScaleStand />
-      </BalanceContainer>
-      
-      <ItemsContainer>
-        {leftItem !== 'wood' && rightItem !== 'wood' && (
-          <Item
-            type="wood"
-            drag
-            onDragStart={() => handleDragStart('wood')}
-            onDragEnd={(e, info) => handleDragEnd(e, info, 'wood')}
-            whileDrag={{ scale: 1.1 }}
-            whileHover={{ scale: 1.05 }}
+    <Wrap>
+      <Flex>
+        <Item>
+          <Badge>실험실</Badge>
+          <p>힘과 우리의 생활 - 탐구 1 &lt;양팔저울로 무게 비교하기&gt;</p>
+        </Item>
+        <Button onClick={() => navigate("/select")}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="23"
+            height="24"
+            viewBox="0 0 23 24"
+            fill="none"
           >
-            <img src={wood} alt='wood'/>
-          </Item>
-        )}
-        {leftItem !== 'metal' && rightItem !== 'metal' && (
-          <Item
-            type="metal"
-            drag
-            onDragStart={() => handleDragStart('metal')}
-            onDragEnd={(e, info) => handleDragEnd(e, info, 'metal')}
-            whileDrag={{ scale: 1.1 }}
-            whileHover={{ scale: 1.05 }}
+            <path
+              d="M3.84153 10.1052L3.17174 10.775L2.50195 10.1052L3.17174 9.43545L3.84153 10.1052ZM19.9468 17.6842C19.9468 17.9354 19.847 18.1764 19.6693 18.3541C19.4917 18.5317 19.2507 18.6316 18.9994 18.6316C18.7482 18.6316 18.5072 18.5317 18.3295 18.3541C18.1519 18.1764 18.0521 17.9354 18.0521 17.6842H19.9468ZM7.90858 15.5119L3.17174 10.775L4.51132 9.43545L9.24816 14.1723L7.90858 15.5119ZM3.17174 9.43545L7.90858 4.69861L9.24816 6.03819L4.51132 10.775L3.17174 9.43545ZM3.84153 9.15787H13.3152V11.0526H3.84153V9.15787ZM19.9468 15.7895V17.6842H18.0521V15.7895H19.9468ZM13.3152 9.15787C15.074 9.15787 16.7608 9.85655 18.0044 11.1002C19.2481 12.3439 19.9468 14.0306 19.9468 15.7895H18.0521C18.0521 14.5332 17.553 13.3283 16.6647 12.44C15.7763 11.5517 14.5715 11.0526 13.3152 11.0526V9.15787Z"
+              fill="white"
+            />
+          </svg>
+          다른 활동 선택하기
+        </Button>
+      </Flex>
+
+      {/* 3 step.
+      1. 양팔저울(CSS로 제작), 나무조각, 철조각 이 있다. 행동지시문구 표기: "물체를 양팔저울 위에 올려 무게를 비교해보세요."
+      2. 물체(나무/철)를 양팔저울 각각 양쪽에 올리면 무거운 쪽으로 양팔저울이 기울어진다.
+      3. 실험결과 문구: "나무조각보다 펄조각이 더 무겁다는 것을 알 수 있어요." 출력
+
+      3step 완료되면 실험 끝 */}
+
+      <ScaleContainer>
+        <Scale tilt={isComplete ? (isMetalHeavier ? "right" : "left") : "none"}>
+          <Pan
+            className="left"
+            onDrop={(e) => handleDrop("left", e.dataTransfer.getData("item"))}
+            onDragOver={(e) => e.preventDefault()}
           >
-            <img src={metal} alt='metal'/>
-          </Item>
-        )}
-      </ItemsContainer>
-      
-      <Description>
-        <p>물체를 양팔저울 위에 올려 무게를 비교해보세요.</p>
-        {/* 물체를 올리면 멘트 수정 */}
-        {/* <p>[나무 조각 이미지] 보다 [철 조각 이미지] 가 더 무겁다는 것을 알 수 있어요.</p> */}
-      </Description>
-    </div>
+            {leftItem && <Img src={leftItem === "wood" ? woodImg : metalImg} />}
+          </Pan>
+          <img src={balanceArmImg} alt="양팔저울" />
+          <Pan
+            className="right"
+            onDrop={(e) => handleDrop("right", e.dataTransfer.getData("item"))}
+            onDragOver={(e) => e.preventDefault()}
+          >
+            {rightItem && (
+              <Img src={rightItem === "wood" ? woodImg : metalImg} />
+            )}
+          </Pan>
+        </Scale>
+      </ScaleContainer>
+
+      <Objects>
+        <DraggableImg
+          src={woodImg}
+          draggable
+          onDragStart={(e) => e.dataTransfer.setData("item", "wood")}
+        />
+        <DraggableImg
+          src={metalImg}
+          draggable
+          onDragStart={(e) => e.dataTransfer.setData("item", "metal")}
+        />
+      </Objects>
+
+      {isComplete && (
+        <Result>나무조각보다 철조각이 더 무겁다는 것을 알 수 있어요.</Result>
+      )}
+
+      <Textwrap>
+        Q. 물체를 위로 들어 올리는데 필요한 힘이 얼마인지 확인해 보세요.
+      </Textwrap>
+    </Wrap>
   );
 };
 
 export default BalancePage;
 
-const Title = styled.h1`
-  font-size: 1.875rem;
-  font-weight: bold;
-  margin-bottom: 2rem;
+const Wrap = styled.div`
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.61) 0%,
+    rgba(114, 208, 255, 0.61) 100%
+  );
+  box-sizing: border-box;
+  overflow: hidden;
 `;
-
-const BalanceContainer = styled.div`
-  position: relative;
-  width: 20rem;
-  height: 16rem;
-  margin-bottom: 4rem;
+const Flex = styled.div`
+  width: 100%;
+  padding: 16px 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(180deg, #fff -25%, #a8deff 342.95%);
+  box-sizing: border-box;
 `;
+const Item = styled.div`
+  display: flex;
+  gap: 20px;
+  align-items: center;
 
-const BalanceBar = styled(motion.div)`
-  position: absolute;
-  width: 16rem;
-  height: 1rem;
-  background-color: #92400e;
-  border-radius: 9999px;
-  left: 2rem;
-  top: 6rem;
+  p {
+    color: #0c3554;
+    font-size: 1.125rem;
+  }
 `;
+const Button = styled.button`
+  display: flex;
+  padding: 10px 16px;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  border-radius: 8px;
+  background: #ff962c;
+  box-shadow: 0px -2px 0px 0px #ff5c16 inset;
+  color: #fff;
 
-const ScaleBase = styled.div`
-  position: absolute;
-  width: 1rem;
-  height: 5rem;
-  background-color: #b45309;
-  left: 10rem;
-  top: 7rem;
+  svg {
+    width: 14px;
+  }
 `;
-
-const ScaleStand = styled.div`
-  position: absolute;
-  width: 4rem;
-  height: 2rem;
-  background-color: #78350f;
-  left: 8rem;
-  top: 12rem;
-  border-bottom-left-radius: 0.5rem;
-  border-bottom-right-radius: 0.5rem;
+const Badge = styled.div`
+  border-radius: 26px;
+  background: #0c3554;
+  color: #fff;
+  padding: 6px 12px;
 `;
-
-const ScalePlate = styled.div`
-  position: absolute;
-  width: 4rem;
-  height: 4rem;
+const Textwrap = styled.div`
+  background: #fff;
+  border-radius: 100px;
+  border: 2px solid #65a8e3;
+  box-shadow: 0px 2px 0px 0px #428bcb;
+  padding: 10px;
+  width: 60%;
   display: flex;
   align-items: center;
   justify-content: center;
-  ${props => props.side === 'left' ? 'left: -1rem;' : 'right: -1rem;'}
-  top: -2rem;
+  margin: 40px auto;
+  color: #236daf;
+  font-size: 1rem;
+`;
+const ScaleContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 60px 0;
+  background-size: contain;
+  background: url(${balanceImg}) center no-repeat;
+  background-size: 130px auto;
+  height: 400px;
+  z-index: 20;
 `;
 
-const ScalePlateBase = styled.div`
-  position: absolute;
-  width: 4rem;
-  height: 0.75rem;
-  background-color: #b45309;
-  bottom: 0;
-  border-radius: 9999px;
+const Scale = styled.div`
+  display: flex;
+  align-items: start;
+  padding-top: 80px;
+  z-index: 0;
+  transform: ${({ tilt }) =>
+    tilt === "left"
+      ? "rotate(-10deg)"
+      : tilt === "right"
+      ? "rotate(10deg)"
+      : "rotate(0deg)"};
+  transition: transform 0.5s ease;
 `;
 
-const ScalePlateCircle = styled.div`
-  width: 3.5rem;
-  height: 3.5rem;
-  background-color: #fb923c;
-  border-radius: 9999px;
-  margin-top: -0.75rem;
+const Pan = styled.div`
+  width: 150px;
+  height: 110px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-`;
+  background: url(${balanceScaleImg}) center no-repeat;
+  background-size: contain;
 
-const Item = styled(motion.div)`
-  /* width: 3rem; */
-  /* height: 3rem; */
-  /* border-radius: 0.25rem; */
-  cursor: move;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  &.left {
+    position: absolute;
+    left: -70px;
+  }
 
-  img {
-    width: 100px;
+  &.right {
+    position: absolute;
+    right: -70px;
   }
 `;
 
-const ItemsContainer = styled.div`
+const Objects = styled.div`
   display: flex;
-  gap: 4rem;
-  margin-top: 2rem;
+  justify-content: center;
+  gap: 30px;
 `;
 
-const Description = styled.div`
-  margin-top: 3rem;
+const DraggableImg = styled.img`
+  width: 80px;
+  cursor: grab;
+`;
+
+const Img = styled.img`
+  width: 60px;
+`;
+
+const Result = styled.div`
+  margin-top: 30px;
   text-align: center;
-  max-width: 32rem;
-  background-color: white;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  font-size: 1.1rem;
+  color: #0c3554;
+  font-weight: bold;
 `;
-
-const Button = styled.button`
-  position: absolute;
-  right: 60px;
-  top: 60px;
-  padding: 12px 28px;
-  background: #faf6c1;
-  border-radius: 50px;
-  font-size: 20px;
-`
