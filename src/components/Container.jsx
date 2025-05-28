@@ -25,7 +25,8 @@ const Layer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 200px;
+  padding: 100px 40px 0px;
+  box-sizing: border-box;
 `;
 
 const BgIcon = styled.div`

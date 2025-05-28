@@ -1,18 +1,22 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import click from "../assets/images/left-click.png"
-import { motion } from "framer-motion";
+import desk from "../assets/images/bg-desk.png";
 
-const Laboratory = () => {
+const Laboratory = ({ 
+  title, 
+  children, 
+  text, 
+  className 
+}) => {
   const navigate = useNavigate();
 
   return (
-    <Wrap>
-      <Flex>
+    <Wrap className={className}>
+      <Nav>
         <Item>
           <Badge>실험실</Badge>
-          <p>힘과 우리의 생활 - 탐구 1 &lt;양팔저울로 무게 비교하기&gt;</p>
+          <p>{title}</p>
         </Item>
         <Button onClick={() => navigate("/select")}>
           <svg
@@ -29,9 +33,17 @@ const Laboratory = () => {
           </svg>
           다른 활동 선택하기
         </Button>
-      </Flex>
+      </Nav>
 
-      {/* Content */}
+      <Main>
+        {children}
+      </Main>
+
+      <Textwrap>
+        {text}
+      </Textwrap>
+
+      <div className="bg-floor"></div>
     </Wrap>
   );
 };
@@ -39,6 +51,7 @@ const Laboratory = () => {
 export default Laboratory;
 
 const Wrap = styled.div`
+  position: relative;
   width: 100%;
   height: 100vh;
   background: linear-gradient(
@@ -48,8 +61,19 @@ const Wrap = styled.div`
   );
   box-sizing: border-box;
   overflow: hidden;
+
+  .bg-floor {
+    width: 100%;
+    height: 350px;
+    position: absolute;
+    bottom: 80px;
+    background: url(${desk}) center bottom no-repeat;
+    z-index: 1;
+    background-size: contain;
+  }
 `;
-const Flex = styled.div`
+
+const Nav = styled.div`
   width: 100%;
   padding: 16px 80px;
   display: flex;
@@ -58,6 +82,14 @@ const Flex = styled.div`
   background: linear-gradient(180deg, #fff -25%, #a8deff 342.95%);
   box-sizing: border-box;
 `;
+
+const Main = styled.div`
+  position: relative;
+  z-index: 1000 !important;
+  width: 100%;
+  height: 100%;
+`;
+
 const Item = styled.div`
   display: flex;
   gap: 20px;
@@ -68,6 +100,7 @@ const Item = styled.div`
     font-size: 1.125rem;
   }
 `;
+
 const Button = styled.button`
   display: flex;
   padding: 10px 16px;
@@ -83,9 +116,29 @@ const Button = styled.button`
     width: 14px;
   }
 `;
+
 const Badge = styled.div`
   border-radius: 26px;
   background: #0c3554;
   color: #fff;
   padding: 6px 12px;
+`;
+
+const Textwrap = styled.div`
+  position: absolute;
+  bottom: 18%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 60%;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border-radius: 100px;
+  border: 2px solid #65a8e3;
+  box-shadow: 0px 2px 0px 0px #428bcb;
+  z-index: 100;
+  color: #236daf;
+  font-size: 1.125rem;
 `;

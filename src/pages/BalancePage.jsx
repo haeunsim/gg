@@ -1,178 +1,229 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import woodImg from "../assets/images/wood.png";
-import metalImg from "../assets/images/metal.png";
+import ironImg from "../assets/images/iron.png";
 import balanceImg from "../assets/images/balance.png";
 import balanceScaleImg from "../assets/images/balance_scale.png";
 import balanceArmImg from "../assets/images/balance_arm.png";
-import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import Laboratory from "../components/Laboratory";
+
+const typingTextQ = "Q. 물체를 양팔저울 위에 올려 무게를 비교해 보세요.";
+const typingTextA = "나무조각보다 철조각이 더 무겁다는 것을 알 수 있어요.";
 
 const BalancePage = () => {
   const [leftItem, setLeftItem] = useState(null);
   const [rightItem, setRightItem] = useState(null);
+  const [draggingItem, setDraggingItem] = useState(null);
+  const [dragPosition, setDragPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [clickedItem, setClickedItem] = useState(null);
 
   const handleDrop = (side, item) => {
     if (side === "left") setLeftItem(item);
     else setRightItem(item);
+    setClickedItem(null);
+  };
+
+  const getTilt = () => {
+    if (!leftItem && !rightItem) return "none";
+    if (leftItem && rightItem) {
+      if (leftItem === "iron" && rightItem === "wood") return "left";
+      if (leftItem === "wood" && rightItem === "iron") return "right";
+      return "none";
+    }
+    if (leftItem) return "left";
+    if (rightItem) return "right";
+    return "none";
   };
 
   const isComplete = leftItem && rightItem;
-  const isMetalHeavier = leftItem === "wood" && rightItem === "metal";
-  const navigate = useNavigate();
+
+  // 마우스 이동 이벤트 핸들러
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+      
+      if (clickedItem) {
+        setDragPosition({ 
+          x: e.clientX - 45,
+          y: e.clientY - 45
+        });
+      }
+    };
+
+    const handleMouseUp = () => {
+      if (clickedItem) {
+        const leftPan = document.querySelector('.left');
+        const rightPan = document.querySelector('.right');
+        
+        if (leftPan && isPointInElement(mousePosition, leftPan)) {
+          handleDrop("left", clickedItem);
+        } else if (rightPan && isPointInElement(mousePosition, rightPan)) {
+          handleDrop("right", clickedItem);
+        }
+        
+        setClickedItem(null);
+        setDragPosition({ x: 0, y: 0 });
+      }
+    };
+
+    const isPointInElement = (point, element) => {
+      const rect = element.getBoundingClientRect();
+      return (
+        point.x >= rect.left &&
+        point.x <= rect.right &&
+        point.y >= rect.top &&
+        point.y <= rect.bottom
+      );
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [clickedItem, mousePosition]);
 
   return (
-    <Wrap>
-      <Flex>
-        <Item>
-          <Badge>실험실</Badge>
-          <p>힘과 우리의 생활 - 탐구 1 &lt;양팔저울로 무게 비교하기&gt;</p>
-        </Item>
-        <Button onClick={() => navigate("/select")}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="23"
-            height="24"
-            viewBox="0 0 23 24"
-            fill="none"
-          >
-            <path
-              d="M3.84153 10.1052L3.17174 10.775L2.50195 10.1052L3.17174 9.43545L3.84153 10.1052ZM19.9468 17.6842C19.9468 17.9354 19.847 18.1764 19.6693 18.3541C19.4917 18.5317 19.2507 18.6316 18.9994 18.6316C18.7482 18.6316 18.5072 18.5317 18.3295 18.3541C18.1519 18.1764 18.0521 17.9354 18.0521 17.6842H19.9468ZM7.90858 15.5119L3.17174 10.775L4.51132 9.43545L9.24816 14.1723L7.90858 15.5119ZM3.17174 9.43545L7.90858 4.69861L9.24816 6.03819L4.51132 10.775L3.17174 9.43545ZM3.84153 9.15787H13.3152V11.0526H3.84153V9.15787ZM19.9468 15.7895V17.6842H18.0521V15.7895H19.9468ZM13.3152 9.15787C15.074 9.15787 16.7608 9.85655 18.0044 11.1002C19.2481 12.3439 19.9468 14.0306 19.9468 15.7895H18.0521C18.0521 14.5332 17.553 13.3283 16.6647 12.44C15.7763 11.5517 14.5715 11.0526 13.3152 11.0526V9.15787Z"
-              fill="white"
-            />
-          </svg>
-          다른 활동 선택하기
-        </Button>
-      </Flex>
-
-      {/* 3 step.
-      1. 양팔저울(CSS로 제작), 나무조각, 철조각 이 있다. 행동지시문구 표기: "물체를 양팔저울 위에 올려 무게를 비교해보세요."
-      2. 물체(나무/철)를 양팔저울 각각 양쪽에 올리면 무거운 쪽으로 양팔저울이 기울어진다.
-      3. 실험결과 문구: "나무조각보다 펄조각이 더 무겁다는 것을 알 수 있어요." 출력
-
-      3step 완료되면 실험 끝 */}
-
+    <Laboratory 
+      title="힘과 우리의 생활 - 탐구 1 &lt;양팔저울로 무게 비교하기&gt;"
+      text={
+        <motion.span
+          key={isComplete ? 'answer' : 'question'}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+          style={{ whiteSpace: "pre-line" }}
+        >
+          {isComplete ? typingTextA : typingTextQ}
+        </motion.span>
+      }
+    >
       <ScaleContainer>
-        <Scale tilt={isComplete ? (isMetalHeavier ? "right" : "left") : "none"}>
+        <img src={balanceImg} alt="양팔저울" className="balance" />
+        <Scale tilt={getTilt()}>
           <Pan
             className="left"
             onDrop={(e) => handleDrop("left", e.dataTransfer.getData("item"))}
             onDragOver={(e) => e.preventDefault()}
           >
-            {leftItem && <Img src={leftItem === "wood" ? woodImg : metalImg} />}
+            {leftItem && <Img src={leftItem === "wood" ? woodImg : ironImg} />}
           </Pan>
-          <img src={balanceArmImg} alt="양팔저울" />
+          <img src={balanceArmImg} alt="양팔저울" className="balance_arm" />
           <Pan
             className="right"
             onDrop={(e) => handleDrop("right", e.dataTransfer.getData("item"))}
             onDragOver={(e) => e.preventDefault()}
           >
             {rightItem && (
-              <Img src={rightItem === "wood" ? woodImg : metalImg} />
+              <Img src={rightItem === "wood" ? woodImg : ironImg} />
             )}
           </Pan>
         </Scale>
       </ScaleContainer>
 
       <Objects>
-        <DraggableImg
-          src={woodImg}
-          draggable
-          onDragStart={(e) => e.dataTransfer.setData("item", "wood")}
-        />
-        <DraggableImg
-          src={metalImg}
-          draggable
-          onDragStart={(e) => e.dataTransfer.setData("item", "metal")}
-        />
+        {!(leftItem === "wood" || rightItem === "wood") && (
+          <DraggableImg
+            src={woodImg}
+            draggable
+            onDragStart={(e) => {
+              e.dataTransfer.setData("item", "wood");
+              setDraggingItem("wood");
+              const img = new Image();
+              img.src = "";
+              e.dataTransfer.setDragImage(img, 0, 0);
+            }}
+            onDrag={(e) => {
+              setDragPosition({ x: e.clientX, y: e.clientY });
+            }}
+            onDragEnd={() => {
+              setDraggingItem(null);
+            }}
+            onMouseDown={(e) => {
+              setClickedItem("wood");
+              setDragPosition({
+                x: e.clientX - 45,
+                y: e.clientY - 45
+              });
+            }}
+            style={{
+              position: clickedItem === "wood" ? "fixed" : "static",
+              left: clickedItem === "wood" ? dragPosition.x : "auto",
+              top: clickedItem === "wood" ? dragPosition.y : "auto",
+              zIndex: clickedItem === "wood" ? 1000 : "auto",
+              pointerEvents: clickedItem === "wood" ? "none" : "auto",
+              transform: clickedItem === "wood" ? "translate(-50%, -50%)" : "none"
+            }}
+          />
+        )}
+
+        {!(leftItem === "iron" || rightItem === "iron") && (
+          <DraggableImg
+            src={ironImg}
+            draggable
+            onDragStart={(e) => {
+              e.dataTransfer.setData("item", "iron");
+              setDraggingItem("iron");
+              const img = new Image();
+              img.src = "";
+              e.dataTransfer.setDragImage(img, 0, 0);
+            }}
+            onDrag={(e) => {
+              setDragPosition({ x: e.clientX, y: e.clientY });
+            }}
+            onDragEnd={() => {
+              setDraggingItem(null);
+            }}
+            onMouseDown={(e) => {
+              setClickedItem("iron");
+              setDragPosition({
+                x: e.clientX - 45,
+                y: e.clientY - 45
+              });
+            }}
+            style={{
+              position: clickedItem === "iron" ? "fixed" : "static",
+              left: clickedItem === "iron" ? dragPosition.x : "auto",
+              top: clickedItem === "iron" ? dragPosition.y : "auto",
+              zIndex: clickedItem === "iron" ? 1000 : "auto",
+              pointerEvents: clickedItem === "iron" ? "none" : "auto",
+              transform: clickedItem === "iron" ? "translate(-50%, -50%)" : "none"
+            }}
+          />
+        )}
       </Objects>
-
-      {isComplete && (
-        <Result>나무조각보다 철조각이 더 무겁다는 것을 알 수 있어요.</Result>
-      )}
-
-      <Textwrap>
-        Q. 물체를 위로 들어 올리는데 필요한 힘이 얼마인지 확인해 보세요.
-      </Textwrap>
-    </Wrap>
+    </Laboratory>
   );
 };
 
 export default BalancePage;
 
-const Wrap = styled.div`
-  width: 100%;
-  height: 100vh;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.61) 0%,
-    rgba(114, 208, 255, 0.61) 100%
-  );
-  box-sizing: border-box;
-  overflow: hidden;
-`;
-const Flex = styled.div`
-  width: 100%;
-  padding: 16px 80px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: linear-gradient(180deg, #fff -25%, #a8deff 342.95%);
-  box-sizing: border-box;
-`;
-const Item = styled.div`
-  display: flex;
-  gap: 20px;
-  align-items: center;
-
-  p {
-    color: #0c3554;
-    font-size: 1.125rem;
-  }
-`;
-const Button = styled.button`
-  display: flex;
-  padding: 10px 16px;
-  justify-content: center;
-  align-items: center;
-  gap: 14px;
-  border-radius: 8px;
-  background: #ff962c;
-  box-shadow: 0px -2px 0px 0px #ff5c16 inset;
-  color: #fff;
-
-  svg {
-    width: 14px;
-  }
-`;
-const Badge = styled.div`
-  border-radius: 26px;
-  background: #0c3554;
-  color: #fff;
-  padding: 6px 12px;
-`;
-const Textwrap = styled.div`
-  background: #fff;
-  border-radius: 100px;
-  border: 2px solid #65a8e3;
-  box-shadow: 0px 2px 0px 0px #428bcb;
-  padding: 10px;
-  width: 60%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 40px auto;
-  color: #236daf;
-  font-size: 1rem;
-`;
 const ScaleContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin: 60px 0;
-  background-size: contain;
-  background: url(${balanceImg}) center no-repeat;
-  background-size: 130px auto;
+  margin-top: 100px;
   height: 400px;
-  z-index: 20;
+  z-index: 100 !important;
+  position: relative;
+
+  .balance {
+    height: 310px;
+    position: absolute;
+    left: 50%;
+    top: 10%;
+    transform: translate(-50%, 0);
+    z-index: 10;
+  }
+  .balance_arm {
+    padding-top: 2px;
+    width: 300px;
+    z-index: -2;
+  }
 `;
 
 const Scale = styled.div`
@@ -180,6 +231,7 @@ const Scale = styled.div`
   align-items: start;
   padding-top: 80px;
   z-index: 0;
+  transform-origin: 50% 100px;
   transform: ${({ tilt }) =>
     tilt === "left"
       ? "rotate(-10deg)"
@@ -190,23 +242,23 @@ const Scale = styled.div`
 `;
 
 const Pan = styled.div`
-  width: 150px;
-  height: 110px;
-  border-radius: 50%;
+  width: 125px;
+  height: 142px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: url(${balanceScaleImg}) center no-repeat;
   background-size: contain;
+  z-index: 1000 !important; 
 
   &.left {
     position: absolute;
-    left: -70px;
+    left: -60px;
   }
 
   &.right {
     position: absolute;
-    right: -70px;
+    right: -60px;
   }
 `;
 
@@ -214,21 +266,16 @@ const Objects = styled.div`
   display: flex;
   justify-content: center;
   gap: 30px;
+  z-index: 1000;
 `;
 
 const DraggableImg = styled.img`
-  width: 80px;
+  width: 90px;
   cursor: grab;
+  z-index: 100;
 `;
 
 const Img = styled.img`
-  width: 60px;
-`;
-
-const Result = styled.div`
-  margin-top: 30px;
-  text-align: center;
-  font-size: 1.1rem;
-  color: #0c3554;
-  font-weight: bold;
+  width: 90px;
+  z-index: -10;
 `;
