@@ -17,7 +17,7 @@ const ResultPage = () => {
         <Content>
           <p>양팔저울은 더 무거운 물체 쪽으로 기울어요.</p>
           <p>지레와 빗면을 이용하면 더 적은 힘으로 물체를 들어 올릴 수 있어요.</p>
-          <Button onClick={() => navigate("/select")}>마치기</Button>
+          <Button onClick={() => navigate("/")}>마치기</Button>
         </Content>
       </Wrap>
     </Container>

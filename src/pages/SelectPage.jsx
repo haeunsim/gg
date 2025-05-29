@@ -2,13 +2,14 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Container from "../components/Container";
+import Header from "../components/HeaderWhite";
 
 const SelectPage = () => {
   const navigate = useNavigate();
 
   return (
     <Container>
-
+      <Header/>
       <Title>힘과 우리 생활</Title>
       <Flex>
         <Item onClick={() => navigate("/balance")}>
@@ -32,14 +33,18 @@ const SelectPage = () => {
       </Flex>
 
       <Button onClick={() => navigate("/result")}>실험 종료</Button>
+      {/* 모든 실험 활동을 실행했을 때만 배운 내용 화면으로 이동, (result) */}
+      {/* "활동을 마치지 않아 처음부터 다시 시작해야 할 수 있습니다! 정말로 종료하시겠습니까?"
+      모달에 "예","아니요" 버튼 추가 */}
+      {/* "예" : 아무 실험도 하지 않았거나 일부만 했을 때 -> 배운 내용 화면은 스킵, 학습 목표 화면으로 이동  */}
     </Container>
   );
 };
 
 const Title = styled.h2`
+  margin: 2rem 0;
   color: #fff;
   font-size: 2.5rem;
-  margin-bottom: 2rem;
   font-family: 'HakgyoansimDunggeunmisoTTF-B';
 `;
 
@@ -57,14 +62,15 @@ const Item = styled.div`
   text-align: center;
   cursor: pointer;
   color: #0C3554;
-
+  box-shadow: 0px 10px 20px rgba(12, 53, 84, 0.1);
+  
   .img {
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     width: 100%;
-    height: 250px;
+    height: 300px;
     background: #f1f1f1;
     border-radius: 20px;
     color: #b7c5d1;
@@ -87,12 +93,17 @@ const Item = styled.div`
 const Button = styled.button`
   position: absolute;
   right: 5rem;
-  bottom: 8rem;
-  padding: 12px 28px;
-  background: #faf6c1;
-  border-radius: 50px;
-  font-size: 1.2rem;
+  bottom: 3rem;
+  width: 200px;
+  height: 70px;
+  border-radius: 56px;
+  background: #1499ff;
+  box-shadow: 0px -8px 0px 0px #0056d6 inset;
+  color: #fff;
+  font-size: 1.4rem;
+  font-family: "HakgyoansimDunggeunmisoTTF-B";
 `;
+
 const Badge = styled.span`
   border-radius: 38px;
   background: #1499FF;

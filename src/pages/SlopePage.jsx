@@ -11,7 +11,6 @@ const SlopePage = () => {
   const [step, setStep] = useState(1);
   const [weightNormal, setWeightNormal] = useState(0);
   const [weightInclined, setWeightInclined] = useState(0);
-  const [showMessage, setShowMessage] = useState(false);
   const [objectMoved, setObjectMoved] = useState(false);
   const [showScales, setShowScales] = useState(true);
 
@@ -94,14 +93,8 @@ const ScalesText = styled.div`
 
 // slopeImg
 const InclinedPlane = styled.div`
-  /* width: 0;
-  height: 0;
-  border-left: 360px solid transparent;
-  border-bottom: 180px solid #CBAA6E; */
   position: relative;
   margin: 0 auto;
-  /* opacity: ${({ step }) => step === 3 ? 1 : 0.8}; */
-  /* transition: opacity 0.5s ease-in-out; */
   z-index: 0;
   position: absolute;
   left: 50%;
@@ -115,12 +108,13 @@ const InclinedPlane = styled.div`
 
 const Content = styled.div`
   position: relative;
-  height: 500px;
+  height: 540px;
   
   .click-icon {
     width: 60px;
     position: absolute;
     left: 50%;
+    bottom: 10%;
   }
   .object-wrap {
     position: absolute;

@@ -16,7 +16,6 @@ const BalancePage = () => {
   const [rightItem, setRightItem] = useState(null);
   const [draggingItem, setDraggingItem] = useState(null);
   const [dragPosition, setDragPosition] = useState({ x: 0, y: 0 });
-  const [isDragging, setIsDragging] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [clickedItem, setClickedItem] = useState(null);
 
@@ -96,8 +95,14 @@ const BalancePage = () => {
           key={isComplete ? 'answer' : 'question'}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
-          style={{ whiteSpace: "pre-line" }}
+          transition={{ 
+            duration: 2,
+            ease: "easeIn"
+          }}
+          style={{ 
+            whiteSpace: "pre-line",
+            display: "inline-block"
+          }}
         >
           {isComplete ? typingTextA : typingTextQ}
         </motion.span>
@@ -206,22 +211,21 @@ export default BalancePage;
 const ScaleContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 100px;
-  height: 400px;
+  margin-top: 150px;
+  height: 450px;
   z-index: 100 !important;
   position: relative;
 
   .balance {
-    height: 310px;
+    height: 404px;
     position: absolute;
     left: 50%;
-    top: 10%;
+    top: 0;
     transform: translate(-50%, 0);
     z-index: 10;
   }
   .balance_arm {
-    padding-top: 2px;
-    width: 300px;
+    width: 367px;
     z-index: -2;
   }
 `;
@@ -229,7 +233,7 @@ const ScaleContainer = styled.div`
 const Scale = styled.div`
   display: flex;
   align-items: start;
-  padding-top: 80px;
+  padding-top: 56px;
   z-index: 0;
   transform-origin: 50% 100px;
   transform: ${({ tilt }) =>
@@ -242,8 +246,8 @@ const Scale = styled.div`
 `;
 
 const Pan = styled.div`
-  width: 125px;
-  height: 142px;
+  width: 169px;
+  height: 190px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -253,29 +257,29 @@ const Pan = styled.div`
 
   &.left {
     position: absolute;
-    left: -60px;
+    left: -80px;
   }
 
   &.right {
     position: absolute;
-    right: -60px;
+    right: -80px;
   }
 `;
 
 const Objects = styled.div`
   display: flex;
   justify-content: center;
-  gap: 30px;
+  gap: 50px;
   z-index: 1000;
 `;
 
 const DraggableImg = styled.img`
-  width: 90px;
+  width: 124px;
   cursor: grab;
   z-index: 100;
 `;
 
 const Img = styled.img`
-  width: 90px;
+  width: 124px;
   z-index: -10;
 `;

@@ -99,7 +99,7 @@ const LeverPage = () => {
                 onClick={handleClick}
               />
             </div>
-            {/* 마우스 클릭유도, 좌우로 살짝 까딱까딱하는 애니메이션 */}
+
             {showClickIcon && (
               <motion.img
                 src={click}
@@ -119,13 +119,12 @@ const LeverPage = () => {
               />
             )}
 
-            {/* 아래에서 위로 올라오는 애니메이션 */}
             {showArrowIcon && (
               <motion.img
                 src={arrow}
                 alt="arrow"
                 className="arrow-icon1"
-                initial={{ opacity: 0, y: 50 }}
+                initial={{ opacity: 0, y: 200 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 2 }}
               />
@@ -134,36 +133,46 @@ const LeverPage = () => {
         )}
         {step >= 2 && (
           <>
-          <div className="lever-wrap">
-            <motion.div
-              className="lever"
-              animate={{
-                rotate: step === 2 ? (leverRotated ? 10 : -10) : 10,
-              }}
-              transition={{ duration: 1, ease: "easeInOut" }}
-              style={{ position: "relative" }}
-            >
-              {/* 오른쪽 끝 클릭 영역 */}
-              {step === 2 && (
-                <div
-                  style={{
-                    position: "absolute",
-                    right: 0,
-                    top: "50%",
-                    width: 60,
-                    height: 60,
-                    transform: "translateY(-50%)",
-                    cursor: "pointer",
-                    zIndex: 2,
-                  }}
-                  onClick={handleLeverClick}
-                >
-                  {/* <img src={click} alt="click" style={{ width: 40 }} /> */}
-                </div>
-              )}
-            </motion.div>
-          </div>
-          <img src={leverImg} alt="lever" className="lever-bg" />
+            <div className="lever-outer">
+              {/* 받침대는 항상 고정 */}
+              <img
+                src={leverImg}
+                alt="lever"
+                className="lever-bg"
+                style={{ left: 90, bottom: -78 }} // 필요시 미세조정
+              />
+              {/* 팔만 motion.div로 회전 */}
+              <motion.div
+                className="lever"
+                animate={{
+                  rotate: step === 2 ? (leverRotated ? 10 : -10) : 10,
+                }}
+                transition={{ duration: 1, ease: "easeInOut" }}
+                style={{
+                  position: "absolute",
+                  left: 0,
+                  bottom: 0,
+                  zIndex: 2,
+                }}
+              >
+                {/* 오른쪽 끝 클릭 영역 */}
+                {step === 2 && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      right: 0,
+                      top: "50%",
+                      width: 60,
+                      height: 60,
+                      transform: "translateY(-50%)",
+                      cursor: "pointer",
+                      zIndex: 2,
+                    }}
+                    onClick={handleLeverClick}
+                  />
+                )}
+              </motion.div>
+            </div>
           </>
         )}
       </Content>
@@ -174,17 +183,21 @@ const LeverPage = () => {
 export default LeverPage;
 
 const ScalesText = styled.div`
+  position: absolute;
+  top: 5%;
+  left: 50%;
+  transform: translateX(-50%);
   width: 200px;
-  margin: 40px auto;
   text-align: center;
   padding: 8px;
+  box-sizing: border-box;
   background: #c5d8f1;
   border-radius: 12px;
 `;
 
 const Content = styled.div`
   position: relative;
-  height: 500px;
+  height: 540px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -192,20 +205,20 @@ const Content = styled.div`
   .object-wrap {
     position: absolute;
     left: 50%;
-    bottom: 22%;
+    bottom: 0;
     transform: translateX(-50%);
   }
   .click-icon1 {
     width: 100px;
     position: absolute;
     left: 50%;
-    top: 70%;
+    bottom: -60px;
   }
   .arrow-icon1 {
     width: 50px;
     position: absolute;
-    left: 52%;
-    top: 20%;
+    left: 55%;
+    top: 50%;
   }
   .object {
     width: 100px;
@@ -214,36 +227,33 @@ const Content = styled.div`
     background-size: contain;
     cursor: pointer;
   }
-  .lever-wrap {
+  .lever-outer {
     position: absolute;
-    bottom: 40%;
     left: 50%;
+    bottom: 60px;
     transform: translateX(-50%);
-
-    /* leverImg 는 rotate 영향받지않도록 */
-    /* ::before {
-      content: '';
-      position: absolute;
-      left: 30%;
-      bottom: -90px;
-      width: 100px;
-      height: 100px;
-      background: url(${leverImg}) no-repeat;
-      background-size: contain;
-    } */
+    width: 600px;
+    height: 150px;
+  }
+  .lever-bg {
+    position: absolute;
+    left: 90px; /* 팔의 왼쪽에서 받침대까지 거리 */
+    bottom: -78px;
+    width: 97px;
+    height: 90px;
+    z-index: 1;
+    pointer-events: none;
+    /* 회전 transform 없음! */
   }
   .lever {
+    position: absolute;
+    left: 0;
+    bottom: 0;
     width: 600px;
     height: 150px;
     background: url(${leverArmImg}) no-repeat;
     background-size: contain;
-  }
-  .lever-bg {
-    width: 120px;
-    height: 120px;
-    position: absolute;
-    top: 57%;
-    left: 44%;
-    z-index: -1;
+    z-index: 2;
+    /* motion.div에서만 rotate 적용 */
   }
 `;
