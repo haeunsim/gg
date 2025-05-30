@@ -11,8 +11,9 @@ const GoalsPage = () => {
   return (
     <Container>
       <Header/>
-      <Title>힘과 우리 생활</Title>
+      
       <Wrap>
+        <Title>힘과 우리 생활</Title>
         <ContentHead>
         <h2>
             <svg
@@ -83,6 +84,7 @@ const GoalsPage = () => {
 export default GoalsPage;
 
 const Title = styled.h2`
+  text-align: center;
   margin-bottom: 30px;
   color: #fff;
   font-size: 2rem;

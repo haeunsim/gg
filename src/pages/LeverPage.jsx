@@ -187,7 +187,6 @@ const LeverPage = () => {
                 src={leverImg}
                 alt="lever"
                 className="lever-bg"
-                style={{ left: 90, bottom: -78 }} // 필요시 미세조정
               />
               {/* 팔만 motion.div로 회전 */}
               <motion.div
@@ -220,6 +219,44 @@ const LeverPage = () => {
                   />
                 )}
               </motion.div>
+
+              {/* step2에서만 보이는 클릭/화살표 아이콘 */}
+              {step === 2 && (
+                <>
+                  <motion.img
+                    src={click}
+                    alt="click"
+                    className="click-icon2"
+                    animate={{
+                      scale: [1, 0.9, 1],
+                      y: [0, 1, 0],
+                      opacity: [1, 0.8, 1],
+                    }}
+                    transition={{
+                      repeat: Infinity,
+                      repeatType: "loop",
+                      duration: 2,
+                      ease: "easeInOut",
+                    }}
+                  />
+                  <motion.img
+                    src={arrow}
+                    alt="arrow"
+                    className="arrow-icon2"
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1.2 }}
+                  />
+                  <motion.img
+                    src={arrow}
+                    alt="arrow"
+                    className="arrow-icon3"
+                    initial={{ opacity: 0, y: 30, rotate:180 }}
+                    animate={{ opacity: 1, y: 0, rotate: 180 }}
+                    transition={{ duration: 1.2, delay: 0.3 }}
+                  />
+                </>
+              )}
             </div>
           </>
         )}
@@ -314,7 +351,7 @@ const Content = styled.div`
     cursor: pointer;
   }
   .arrow-icon1 {
-    width: 50px;
+    width: 60px;
     position: absolute;
     left: 55%;
     top: 35%;
@@ -337,8 +374,8 @@ const Content = styled.div`
   }
   .lever-bg {
     position: absolute;
-    left: 90px;
-    bottom: -78px;
+    left: 200px;
+    bottom: -80px;
     width: 97px;
     height: 90px;
     z-index: 1;
@@ -346,12 +383,36 @@ const Content = styled.div`
   }
   .lever {
     position: absolute;
-    left: 0;
+    left: -200px;
     bottom: 0;
     width: 600px;
     height: 150px;
     background: url(${leverArmImg}) no-repeat;
     background-size: contain;
     z-index: 2;
+    transform-origin: 200px 100px;
+  }
+  .click-icon2 {
+    width: 100px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 3;
+    cursor: pointer;
+  }
+  .arrow-icon2 {
+    width: 60px;
+    position: absolute;
+    left: 60px;
+    top: 10px;
+    z-index: 3;
+  }
+  .arrow-icon3 {
+    width: 60px;
+    position: absolute;
+    /* left: 420px; */
+    right: 60px;
+    top: 60px;
+    z-index: 3;
   }
 `;
