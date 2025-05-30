@@ -2,8 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import desk from "../assets/images/bg-desk.png";
+import { motion } from "framer-motion";
 
-const Laboratory = ({ title, children, text, className }) => {
+const Laboratory = ({ title, children, text, isComplete, className }) => {
   const navigate = useNavigate();
 
   return (
@@ -33,9 +34,25 @@ const Laboratory = ({ title, children, text, className }) => {
 
       <Main>{children}</Main>
 
-      <Textwrap>
-        <p>{text}</p>
-      </Textwrap>
+      {!isComplete && (
+        <Text>
+          <p>{text}</p>
+        </Text>
+      )}
+
+      {isComplete && (
+        <ResultText
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" viewBox="0 0 70 70" fill="none">
+            <circle cx="35" cy="35" r="35" fill="white"/>
+            <path d="M21 38.6552L29.1441 47L52 25" stroke="#34C9FF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <p>{text}</p>
+        </ResultText>
+      )}
 
       <div className="bg-floor"></div>
     </Wrap>
@@ -48,11 +65,12 @@ const Wrap = styled.div`
   position: relative;
   width: 100%;
   height: 100vh;
-  background: linear-gradient(
+  /* background: linear-gradient(
     180deg,
     rgba(255, 255, 255, 0.61) 0%,
     rgba(114, 208, 255, 0.61) 100%
-  );
+  ); */
+  background: linear-gradient(0deg, #E0EFFF 23.62%, #4197D8 178.01%);
   box-sizing: border-box;
   overflow: hidden;
 
@@ -63,7 +81,7 @@ const Wrap = styled.div`
     bottom: 0;
     background: url(${desk}) center bottom no-repeat;
     z-index: 1;
-    background-size: contain;
+    background-size: cover;
   }
 `;
 
@@ -99,8 +117,8 @@ const Button = styled.button`
   width: 210px;
   height: 56px;
   position: absolute;
-  top: 10%;
-  right: 5%;
+  top: 110px;
+  right: 80px;
   display: flex;
   /* padding: 1rem; */
   justify-content: center;
@@ -130,7 +148,7 @@ const Badge = styled.div`
   font-size: 1.4rem;
 `;
 
-const Textwrap = styled.div`
+const Text = styled.div`
   position: absolute;
   bottom: 8%;
   left: 50%;
@@ -140,6 +158,7 @@ const Textwrap = styled.div`
   justify-content: center;
   text-align: center;
   z-index: 100;
+  width: 90%;
 
   * {
     font-family: "HakgyoansimDunggeunmisoTTF-R" !important;
@@ -150,3 +169,32 @@ const Textwrap = styled.div`
     font-size: 2rem;
   }
 `;
+const ResultText = styled(motion.div)`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 200px;
+  border-top: 2px solid rgba(255, 255, 255, 0.5);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+  background: linear-gradient(90deg, rgba(186, 225, 255, 0.00) 0%, #89E3FF 50%, rgba(186, 225, 255, 0.00) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+
+  * {
+    font-family: "HakgyoansimDunggeunmisoTTF-R" !important;
+  }
+
+  svg {
+    position: absolute;
+    top: -16%;
+  }
+  p {
+    color: #0C3554;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 400;
+  }
+`

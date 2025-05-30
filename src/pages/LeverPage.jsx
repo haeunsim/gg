@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 import Laboratory from "../components/Laboratory";
 import objectImg from "../assets/images/object.png";
 import leverImg from "../assets/images/lever.png";
@@ -17,14 +17,27 @@ const LeverPage = () => {
   const [leverRotated, setLeverRotated] = useState(false);
   const [showClickIcon, setShowClickIcon] = useState(false);
   const [showArrowIcon, setShowArrowIcon] = useState(false);
+  const [isComplete, setIsComplete] = useState(false);
 
-  // step1에서 5초 이내 object 클릭 안하면 click 유도 아이콘 노출
+  const normalWeightMotion = useMotionValue(0);
+  const normalWeight = useTransform(normalWeightMotion, (latest) => {
+    if (latest >= 100) {
+      return Math.round(latest / 10) * 10;
+    }
+    return Math.round(latest);
+  });
+
+  const inclinedWeightMotion = useMotionValue(0);
+  const inclinedWeight = useTransform(inclinedWeightMotion, (latest) => {
+    if (latest >= 100) {
+      return Math.round(latest / 10) * 10;
+    }
+    return Math.round(latest);
+  });
+
   useEffect(() => {
     if (step === 1 && showScales) {
-      const timer = setTimeout(() => {
-        setShowClickIcon(true);
-      }, 1000);
-      return () => clearTimeout(timer);
+      setShowClickIcon(true);
     } else {
       setShowClickIcon(false);
     }
@@ -32,23 +45,26 @@ const LeverPage = () => {
 
   const handleClick = () => {
     if (step === 1) {
-      setShowClickIcon(false); // 클릭 시 click 아이콘 숨김
-      setShowArrowIcon(true); // 클릭 시 arrow 아이콘 노출
+      setShowClickIcon(false);
+      setShowArrowIcon(true);
       setObjectMoved(true);
       setTimeout(() => {
+        animate(normalWeightMotion, 30, { duration: 1.5 });
         setWeightNormal(30);
         setTimeout(() => {
           setStep(2);
           setObjectMoved(false);
-          setShowArrowIcon(false); // 이동 끝나면 arrow 아이콘 숨김
+          setShowArrowIcon(false);
         }, 1500);
       }, 1000);
     } else if (step === 2) {
       setObjectMoved(true);
       setTimeout(() => {
+        animate(inclinedWeightMotion, 10, { duration: 1.5 });
         setWeightInclined(10);
         setTimeout(() => {
           setStep(3);
+          setIsComplete(true);
         }, 1500);
       }, 1000);
     }
@@ -60,6 +76,7 @@ const LeverPage = () => {
       setTimeout(() => {
         setStep(3);
         setLeverRotated(false);
+        setIsComplete(true);
       }, 1500);
     }
   };
@@ -68,14 +85,44 @@ const LeverPage = () => {
     <Laboratory
       title="힘과 우리의 생활 - 탐구 2 &lt;지레를 이용해 물건 들기&gt;"
       text={
-        step === 3
-          ? "지레를 사용하면 물체를 들어 올리는데 더 적은 힘이 든다는 걸 알 수 있어요"
-          : "물체를 위로 들어 올리는데 필요한 힘이 얼마인지 확인해 보세요."
+        <motion.span
+          key={isComplete ? 'answer' : 'question'}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ 
+            duration: 2,
+            ease: "easeIn"
+          }}
+          style={{ 
+            whiteSpace: "pre-line",
+            display: "inline-block"
+          }}
+        >
+          {isComplete 
+            ? "지레를 사용하면 물체를 들어 올리는데 더 적은 힘이 든다는 걸 알 수 있어요"
+            : "물체를 위로 들어 올리는데 필요한 힘이 얼마인지 확인해 보세요."
+          }
+        </motion.span>
       }
+      isComplete={isComplete}
     >
       <ScalesText>
-        <p>그냥 들어 올릴 때: {weightNormal}g</p>
-        <p>지레를 사용할 때: {weightInclined}g</p>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="44"
+          height="44"
+          viewBox="0 0 44 44"
+          fill="none"
+        >
+          <circle cx="22" cy="22" r="22" fill="#255D8F" />
+          <path
+            d="M19.6191 15.9102H23.3809V35H19.6191V15.9102ZM21.5176 12.957C21.0957 12.957 20.6973 12.8574 20.3223 12.6582C19.959 12.459 19.666 12.1895 19.4434 11.8496C19.2324 11.5098 19.127 11.1406 19.127 10.7422C19.127 10.3438 19.2324 9.97461 19.4434 9.63477C19.666 9.29492 19.959 9.02539 20.3223 8.82617C20.6973 8.62695 21.0957 8.52734 21.5176 8.52734C21.9395 8.52734 22.3262 8.62695 22.6777 8.82617C23.041 9.02539 23.3281 9.29492 23.5391 9.63477C23.7617 9.97461 23.873 10.3438 23.873 10.7422C23.873 11.1406 23.7617 11.5098 23.5391 11.8496C23.3281 12.1895 23.041 12.459 22.6777 12.6582C22.3262 12.8574 21.9395 12.957 21.5176 12.957Z"
+            fill="white"
+          />
+        </svg>
+
+        <p>그냥 들어 올릴 때: <motion.span>{normalWeight}</motion.span>g</p>
+        <p>지레를 사용할 때: <motion.span>{inclinedWeight}</motion.span>g</p>
       </ScalesText>
 
       <Content>
@@ -116,6 +163,7 @@ const LeverPage = () => {
                   duration: 2,
                   ease: "easeInOut",
                 }}
+                onClick={handleClick}
               />
             )}
 
@@ -124,7 +172,7 @@ const LeverPage = () => {
                 src={arrow}
                 alt="arrow"
                 className="arrow-icon1"
-                initial={{ opacity: 0, y: 200 }}
+                initial={{ opacity: 0, y: 300 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 2 }}
               />
@@ -184,20 +232,70 @@ export default LeverPage;
 
 const ScalesText = styled.div`
   position: absolute;
-  top: 5%;
+  top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 200px;
+  width: 400px;
   text-align: center;
-  padding: 8px;
+  padding: 20px;
   box-sizing: border-box;
-  background: #c5d8f1;
-  border-radius: 12px;
+  border: 1px solid #5596cf;
+  background: #e9f5ff;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -20px;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 20px solid #e9f5ff;
+    z-index: 2;
+  }
+  &::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -22px;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 16px solid transparent;
+    border-right: 16px solid transparent;
+    border-top: 22px solid #5596cf;
+    z-index: 1;
+  }
+
+  svg {
+    position: absolute;
+    top: -18px;
+    left: -18px;
+  }
+
+  p {
+    color: #0c3554;
+    text-align: center;
+    font-family: Pretendard;
+    font-size: 1.4rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 2.6rem;
+  }
+
+  span {
+    display: inline-block;
+    width: 40px;
+    margin-right: 4px;
+  }
 `;
 
 const Content = styled.div`
   position: relative;
-  height: 540px;
+  margin-top: 40px;
+  height: 600px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -211,18 +309,20 @@ const Content = styled.div`
   .click-icon1 {
     width: 100px;
     position: absolute;
-    left: 50%;
+    left: 51%;
     bottom: -60px;
+    cursor: pointer;
   }
   .arrow-icon1 {
     width: 50px;
     position: absolute;
     left: 55%;
-    top: 50%;
+    top: 35%;
+    z-index: -1;
   }
   .object {
-    width: 100px;
-    height: 100px;
+    width: 130px;
+    height: 130px;
     background: url(${objectImg}) center center no-repeat;
     background-size: contain;
     cursor: pointer;
@@ -237,13 +337,12 @@ const Content = styled.div`
   }
   .lever-bg {
     position: absolute;
-    left: 90px; /* 팔의 왼쪽에서 받침대까지 거리 */
+    left: 90px;
     bottom: -78px;
     width: 97px;
     height: 90px;
     z-index: 1;
     pointer-events: none;
-    /* 회전 transform 없음! */
   }
   .lever {
     position: absolute;
@@ -254,6 +353,5 @@ const Content = styled.div`
     background: url(${leverArmImg}) no-repeat;
     background-size: contain;
     z-index: 2;
-    /* motion.div에서만 rotate 적용 */
   }
 `;

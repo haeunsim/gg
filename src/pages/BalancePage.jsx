@@ -107,6 +107,7 @@ const BalancePage = () => {
           {isComplete ? typingTextA : typingTextQ}
         </motion.span>
       }
+      isComplete={isComplete}
     >
       <ScaleContainer>
         <img src={balanceImg} alt="양팔저울" className="balance" />
@@ -135,6 +136,7 @@ const BalancePage = () => {
         {!(leftItem === "wood" || rightItem === "wood") && (
           <DraggableImg
             src={woodImg}
+            position="left"
             draggable
             onDragStart={(e) => {
               e.dataTransfer.setData("item", "wood");
@@ -157,12 +159,12 @@ const BalancePage = () => {
               });
             }}
             style={{
-              position: clickedItem === "wood" ? "fixed" : "static",
-              left: clickedItem === "wood" ? dragPosition.x : "auto",
-              top: clickedItem === "wood" ? dragPosition.y : "auto",
+              position: clickedItem === "wood" ? "fixed" : "absolute",
+              left: clickedItem === "wood" ? dragPosition.x : "calc(50% - 150px)",
+              top: clickedItem === "wood" ? dragPosition.y : "50%",
               zIndex: clickedItem === "wood" ? 1000 : "auto",
               pointerEvents: clickedItem === "wood" ? "none" : "auto",
-              transform: clickedItem === "wood" ? "translate(-50%, -50%)" : "none"
+              transform: clickedItem === "wood" ? "translate(-50%, -50%)" : "translateY(-50%)"
             }}
           />
         )}
@@ -170,6 +172,7 @@ const BalancePage = () => {
         {!(leftItem === "iron" || rightItem === "iron") && (
           <DraggableImg
             src={ironImg}
+            position="right"
             draggable
             onDragStart={(e) => {
               e.dataTransfer.setData("item", "iron");
@@ -192,12 +195,12 @@ const BalancePage = () => {
               });
             }}
             style={{
-              position: clickedItem === "iron" ? "fixed" : "static",
-              left: clickedItem === "iron" ? dragPosition.x : "auto",
-              top: clickedItem === "iron" ? dragPosition.y : "auto",
+              position: clickedItem === "iron" ? "fixed" : "absolute",
+              left: clickedItem === "iron" ? dragPosition.x : "calc(50% + 50px)",
+              top: clickedItem === "iron" ? dragPosition.y : "50%",
               zIndex: clickedItem === "iron" ? 1000 : "auto",
               pointerEvents: clickedItem === "iron" ? "none" : "auto",
-              transform: clickedItem === "iron" ? "translate(-50%, -50%)" : "none"
+              transform: clickedItem === "iron" ? "translate(-50%, -50%)" : "translateY(-50%)"
             }}
           />
         )}
@@ -211,7 +214,7 @@ export default BalancePage;
 const ScaleContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 150px;
+  margin-top: 155px;
   height: 450px;
   z-index: 100 !important;
   position: relative;
@@ -269,14 +272,21 @@ const Pan = styled.div`
 const Objects = styled.div`
   display: flex;
   justify-content: center;
-  gap: 50px;
+  gap: 100px;
   z-index: 1000;
+  position: relative;
+  width: 100%;
+  height: 100px;
 `;
 
 const DraggableImg = styled.img`
   width: 124px;
   cursor: grab;
   z-index: 100;
+  position: absolute;
+  left: ${props => props.position === 'left' ? 'calc(50% - 150px)' : 'calc(50% + 50px)'};
+  top: 50%;
+  transform: translateY(-50%);
 `;
 
 const Img = styled.img`
