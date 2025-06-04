@@ -53,10 +53,7 @@ const SelectPage = () => {
       </Flex>
 
       <Button onClick={handleExitClick}>실험 종료</Button>
-      {/* 모든 실험 활동을 완료했을 때만 배운 내용 화면으로 이동, (/result) */}
-      {/* 모든 실험 활동을 완료하지않았을 경우, (각 실험의 isComplete 가 필요하다. -> zustand 추가 관리가 필요함)
-      "활동을 마치지 않아 처음부터 다시 시작해야 할 수 있습니다! 정말로 종료하시겠습니까?" 모달에 "예","아니요" 버튼 추가 */}
-      {/* "예" : 아무 실험도 하지 않았거나 일부만 했을 때 -> 배운 내용 화면은 스킵, 학습 목표 화면으로 이동 (/goals)  */}
+
       {isModalOpen && (
         <>
           <ModalOverlay />
