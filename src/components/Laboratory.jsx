@@ -25,6 +25,8 @@ const Laboratory = ({ title, children, text, isComplete, className }) => {
     setIsModalOpen(false);
   };
 
+
+
   return (
     <Wrap className={className}>
       <Nav>
@@ -238,6 +240,8 @@ const ResultText = styled(motion.div)`
     color: #0c3554;
     font-size: clamp(1.8rem, 4vw, 3rem);
     font-weight: 400;
+    padding: 0 40px;
+    text-align: center;
   }
 `;
 const Modal = styled.div`

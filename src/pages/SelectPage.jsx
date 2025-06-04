@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { motion } from "framer-motion";
 import Container from "../components/Container";
 import Header from "../components/HeaderWhite";
 import useExperimentStore from "../store/experimentStore";
+import balance from "../assets/images/balance-img.png";
+import lever from "../assets/images/lever-img.png";
+import slope from "../assets/images/slope-img.png";
 
 const SelectPage = () => {
   const navigate = useNavigate();
@@ -32,23 +36,71 @@ const SelectPage = () => {
       <Header/>
       <Title>힘과 우리 생활</Title>
       <Flex>
-        <Item onClick={() => navigate("/balance")}>
+        <Item 
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          transition={{ 
+            type: "tween", 
+            ease: [0.4, 0, 0.2, 1],
+            duration: 0.4,
+            scale: {
+              type: "tween",
+              ease: [0.4, 0, 0.2, 1],
+              duration: 0.4
+            }
+          }}
+          onClick={() => navigate("/balance")}
+        >
           <Badge>탐구1</Badge>
           <h4><span>양팔저울</span>로<br/>무게 비교하기</h4>
           <p>수평 잡기를 이용하여<br/>물체의 무게를 비교해 보아요.</p>
-          <div className="img">이미지</div>
+          <div className="img balance">
+            <img src={balance} alt="양팔저울 이미지" />
+          </div>
         </Item>
-        <Item onClick={() => navigate("/lever")}>
+        <Item 
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          transition={{ 
+            type: "tween", 
+            ease: [0.4, 0, 0.2, 1],
+            duration: 0.4,
+            scale: {
+              type: "tween",
+              ease: [0.4, 0, 0.2, 1],
+              duration: 0.4
+            }
+          }}
+          onClick={() => navigate("/lever")}
+        >
           <Badge>탐구2</Badge>
           <h4><span>지레</span>를 이용해<br/>물건 들기</h4>
           <p>막대 지레를 이용해<br/>무거운 물체를 들어 보아요.</p>
-          <div className="img">이미지</div>
+          <div className="img lever">
+            <img src={lever} alt="지레 이미지"/>
+          </div>
         </Item>
-        <Item onClick={() => navigate("/slope")}>
+        <Item 
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          transition={{ 
+            type: "tween", 
+            ease: [0.4, 0, 0.2, 1],
+            duration: 0.4,
+            scale: {
+              type: "tween",
+              ease: [0.4, 0, 0.2, 1],
+              duration: 0.4
+            }
+          }}
+          onClick={() => navigate("/slope")}
+        >
           <Badge>탐구3</Badge>
           <h4><span>빗면</span>을 이용해<br/>물건 들기</h4>
           <p>경사면을 따라 물체를<br/>들어 올려 보아요.</p>
-          <div className="img">이미지</div>
+          <div className="img slope">
+            <img src={slope} alt="경사면 이미지"/>
+          </div>
         </Item>
       </Flex>
 
@@ -95,7 +147,7 @@ const Flex = styled.div`
   display: flex;
   gap: 1.8rem;
 `;
-const Item = styled.div`
+const Item = styled(motion.div)`
   width: 30%;
   padding: 1.6rem;
   background: #fff;
@@ -112,9 +164,17 @@ const Item = styled.div`
     text-align: center;
     width: 100%;
     height: 300px;
-    background: #f1f1f1;
     border-radius: 20px;
-    color: #b7c5d1;
+    > img {
+      width: 90%;
+    }
+
+    &.balance img {
+      width: 75%;
+    }
+    &.slope img {
+      width: 80%;
+    }
   }
 
   p {
@@ -133,8 +193,8 @@ const Item = styled.div`
 `;
 const Button = styled.button`
   position: absolute;
-  right: 5rem;
-  bottom: 3rem;
+  right: 4rem;
+  bottom: 2rem;
   width: 200px;
   height: 70px;
   border-radius: 56px;
@@ -143,6 +203,10 @@ const Button = styled.button`
   color: #fff;
   font-size: 1.4rem;
   font-family: "HakgyoansimDunggeunmisoTTF-B";
+
+  &:hover {
+    background: #0693ff;
+  }
 `;
 
 const Badge = styled.span`

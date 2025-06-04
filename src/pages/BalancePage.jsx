@@ -12,6 +12,9 @@ import useExperimentStore from "../store/experimentStore";
 const typingTextQ = "Q. 물체를 양팔저울 위에 올려 무게를 비교해 보세요.";
 const typingTextA = "나무조각보다 철조각이 더 무겁다는 것을 알 수 있어요.";
 
+const WOOD_WEIGHT = 30;
+const IRON_WEIGHT = 100;
+
 const BalancePage = () => {
   const [leftItem, setLeftItem] = useState(null);
   const [rightItem, setRightItem] = useState(null);
@@ -20,23 +23,34 @@ const BalancePage = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [clickedItem, setClickedItem] = useState(null);
   const setBalanceComplete = useExperimentStore((state) => state.setBalanceComplete);
+  const [tempTilt, setTempTilt] = useState(null);
 
   const handleDrop = (side, item) => {
     if (side === "left") setLeftItem(item);
     else setRightItem(item);
     setClickedItem(null);
+
   };
 
   const getTilt = () => {
-    if (!leftItem && !rightItem) return "none";
+    if (tempTilt) return tempTilt;
+    if (!leftItem && !rightItem) return { side: "none", angle: 0 };
     if (leftItem && rightItem) {
-      if (leftItem === "iron" && rightItem === "wood") return "left";
-      if (leftItem === "wood" && rightItem === "iron") return "right";
-      return "none";
+      // 무게 비율에 따라 각도 계산
+      const leftWeight = leftItem === "wood" ? WOOD_WEIGHT : leftItem === "iron" ? IRON_WEIGHT : 0;
+      const rightWeight = rightItem === "wood" ? WOOD_WEIGHT : rightItem === "iron" ? IRON_WEIGHT : 0;
+      if (leftWeight === rightWeight) return { side: "none", angle: 0 };
+      const MAX_ANGLE = 10;
+      const total = leftWeight + rightWeight;
+      const diff = Math.abs(leftWeight - rightWeight);
+      const angle = Math.round((diff / total) * MAX_ANGLE * 10) / 10;
+      if (leftWeight > rightWeight) return { side: "left", angle };
+      if (rightWeight > leftWeight) return { side: "right", angle };
+      return { side: "none", angle: 0 };
     }
-    if (leftItem) return "left";
-    if (rightItem) return "right";
-    return "none";
+    if (leftItem) return { side: "left", angle: 10 };
+    if (rightItem) return { side: "right", angle: 10 };
+    return { side: "none", angle: 0 };
   };
 
   const isComplete = leftItem && rightItem;
@@ -122,27 +136,18 @@ const BalancePage = () => {
       }
       isComplete={isComplete}
     >
+
       <ScaleContainer>
         <img src={balanceImg} alt="양팔저울" className="balance" />
-        <Scale tilt={getTilt()}>
-          <Pan
-            className="left"
-            onDrop={(e) => handleDrop("left", e.dataTransfer.getData("item"))}
-            onDragOver={(e) => e.preventDefault()}
-          >
+        <BalanceArm tilt={getTilt()}>
+          <Pan className="left" tilt={getTilt()}>
             {leftItem && <Img src={leftItem === "wood" ? woodImg : ironImg} />}
           </Pan>
-          <img src={balanceArmImg} alt="양팔저울" className="balance_arm" />
-          <Pan
-            className="right"
-            onDrop={(e) => handleDrop("right", e.dataTransfer.getData("item"))}
-            onDragOver={(e) => e.preventDefault()}
-          >
-            {rightItem && (
-              <Img src={rightItem === "wood" ? woodImg : ironImg} />
-            )}
+          <img src={balanceArmImg} alt="저울대" className="balance_arm" />
+          <Pan className="right" tilt={getTilt()}>
+            {rightItem && <Img src={rightItem === "wood" ? woodImg : ironImg} />}
           </Pan>
-        </Scale>
+        </BalanceArm>
       </ScaleContainer>
 
       <Objects>
@@ -173,7 +178,7 @@ const BalancePage = () => {
             }}
             style={{
               position: clickedItem === "wood" ? "fixed" : "absolute",
-              left: clickedItem === "wood" ? dragPosition.x : "calc(50% - 150px)",
+              left: clickedItem === "wood" ? dragPosition.x : "calc(50% - 174px)",
               top: clickedItem === "wood" ? dragPosition.y : "50%",
               zIndex: clickedItem === "wood" ? 1000 : "auto",
               pointerEvents: clickedItem === "wood" ? "none" : "auto",
@@ -246,19 +251,22 @@ const ScaleContainer = styled.div`
   }
 `;
 
-const Scale = styled.div`
-  display: flex;
-  align-items: start;
-  padding-top: 56px;
-  z-index: 0;
-  transform-origin: 50% 100px;
-  transform: ${({ tilt }) =>
-    tilt === "left"
-      ? "rotate(-10deg)"
-      : tilt === "right"
-      ? "rotate(10deg)"
-      : "rotate(0deg)"};
+const BalanceArm = styled.div`
+  position: relative;
+  width: 367px;
+  height: 40px;
+  transform-origin: 50% 50%; // 저울대 중심에서 회전
+  transform: ${({ tilt }) => {
+    if (!tilt || tilt.side === "none") return "rotate(0deg)";
+    if (tilt.side === "left") return `rotate(-${tilt.angle}deg)`;
+    if (tilt.side === "right") return `rotate(${tilt.angle}deg)`;
+    return "rotate(0deg)";
+  }};
   transition: transform 0.5s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 25px;
 `;
 
 const Pan = styled.div`
@@ -269,23 +277,25 @@ const Pan = styled.div`
   justify-content: center;
   background: url(${balanceScaleImg}) center no-repeat;
   background-size: contain;
-  z-index: 1000 !important; 
-
-  &.left {
-    position: absolute;
-    left: -80px;
-  }
-
-  &.right {
-    position: absolute;
-    right: -80px;
-  }
+  position: absolute;
+  top: 23px;
+  left: ${({ className }) => className === "left" ? "-75px" : "auto"};
+  right: ${({ className }) => className === "right" ? "-75px" : "auto"};
+  // Pan은 BalanceArm의 기울기를 상쇄하여 수평을 유지
+  transform: ${({ tilt, className }) => {
+    if (!tilt || tilt.side === "none") return "rotate(0deg)";
+    if (tilt.side === "left") return `rotate(${tilt.angle}deg)`;
+    if (tilt.side === "right") return `rotate(-${tilt.angle}deg)`;
+    return "rotate(0deg)";
+  }};
+  transition: transform 0.5s;
+  z-index: 10;
+  transform-origin: 50% 0%; // Pan의 상단 중심에서 회전 (매달린 지점)
 `;
 
 const Objects = styled.div`
   display: flex;
   justify-content: center;
-  gap: 100px;
   z-index: 1000;
   position: relative;
   width: 100%;
@@ -295,9 +305,9 @@ const Objects = styled.div`
 const DraggableImg = styled.img`
   width: 124px;
   cursor: grab;
-  z-index: 100;
+  z-index: -100;
   position: absolute;
-  left: ${props => props.position === 'left' ? 'calc(50% - 150px)' : 'calc(50% + 50px)'};
+  left: ${props => props.position === 'left' ? 'calc(50% - 174px)' : 'calc(50% + 50px)'};
   top: 50%;
   transform: translateY(-50%);
 `;

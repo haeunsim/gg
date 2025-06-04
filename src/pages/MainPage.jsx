@@ -179,7 +179,8 @@ const TapUnit = styled.div`
 
   > div {
     flex: 1;
-    width: 300px;
+    max-width: 300px;
+    margin-right: 20px;
     box-sizing: border-box;
     background: #d9d9d9;
     padding: 30px;
@@ -242,12 +243,10 @@ const UnitView = styled.div`
 const Img = styled.div`
   width: 340px;
   height: 340px;
-  background: #ddd;
-  border-radius: 37px;
-  overflow: hidden;
-  border: 1px solid #808080;
   > img {
+    border-radius: 37px;
     width: 100%;
+    border: 1px solid #808080;
   }
 `;
 const TextWrap = styled.div`

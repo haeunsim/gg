@@ -7,12 +7,9 @@ import leverImg from "../assets/images/lever.png";
 import leverArmImg from "../assets/images/lever_arm2.png";
 import click from "../assets/images/hand.png";
 import arrow from "../assets/images/arrow.png";
-import useExperimentStore from "../store/experimentStore";
 
 const LeverPage = () => {
   const [step, setStep] = useState(1);
-  const [weightNormal, setWeightNormal] = useState(0);
-  const [weightInclined, setWeightInclined] = useState(0);
   const [objectMoved, setObjectMoved] = useState(false);
   const [showScales, setShowScales] = useState(true);
   const [leverRotated, setLeverRotated] = useState(false);
@@ -20,7 +17,6 @@ const LeverPage = () => {
   const [showArrowIcon, setShowArrowIcon] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
   const [showLeverIcons, setShowLeverIcons] = useState(false);
-  const setLeverComplete = useExperimentStore((state) => state.setLeverComplete);
 
   const normalWeightMotion = useMotionValue(0);
   const normalWeight = useTransform(normalWeightMotion, (latest) => {
@@ -53,7 +49,6 @@ const LeverPage = () => {
       setObjectMoved(true);
       setTimeout(() => {
         animate(normalWeightMotion, 30, { duration: 1.5 });
-        setWeightNormal(30);
         setTimeout(() => {
           setStep(2);
           setObjectMoved(false);
@@ -64,7 +59,6 @@ const LeverPage = () => {
       setObjectMoved(true);
       setTimeout(() => {
         animate(inclinedWeightMotion, 10, { duration: 1.5 });
-        setWeightInclined(10);
         setTimeout(() => {
           setStep(3);
           setIsComplete(true);
@@ -77,12 +71,15 @@ const LeverPage = () => {
     if (!leverRotated) {
       setLeverRotated(true);
       setShowLeverIcons(true);
+      
+      // inclinedWeight 애니메이션 추가
+      animate(inclinedWeightMotion, 10, { duration: 1.5 });
+      
       setTimeout(() => {
         setStep(3);
         setLeverRotated(false);
         setIsComplete(true);
         setShowLeverIcons(false);
-        setLeverComplete(true);
       }, 1500);
     }
   };

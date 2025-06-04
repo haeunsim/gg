@@ -15,7 +15,6 @@ const useExperimentStore = create((set) => ({
   }
 }));
 
-// store 상태 변경을 구독하여 콘솔에 출력
 useExperimentStore.subscribe((state) => {
   console.log('현재 실험 완료 상태:', {
     양팔저울: state.isBalanceComplete,
