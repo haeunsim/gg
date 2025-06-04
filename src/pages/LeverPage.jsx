@@ -7,6 +7,7 @@ import leverImg from "../assets/images/lever.png";
 import leverArmImg from "../assets/images/lever_arm2.png";
 import click from "../assets/images/hand.png";
 import arrow from "../assets/images/arrow.png";
+import useExperimentStore from "../store/experimentStore";
 
 const LeverPage = () => {
   const [step, setStep] = useState(1);
@@ -14,9 +15,13 @@ const LeverPage = () => {
   const [showScales, setShowScales] = useState(true);
   const [leverRotated, setLeverRotated] = useState(false);
   const [showClickIcon, setShowClickIcon] = useState(false);
+  const [showClickIcon2, setShowClickIcon2] = useState(false);
   const [showArrowIcon, setShowArrowIcon] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
   const [showLeverIcons, setShowLeverIcons] = useState(false);
+  const setLeverComplete = useExperimentStore(
+    (state) => state.setLeverComplete
+  );
 
   const normalWeightMotion = useMotionValue(0);
   const normalWeight = useTransform(normalWeightMotion, (latest) => {
@@ -42,11 +47,20 @@ const LeverPage = () => {
     }
   }, [step, showScales]);
 
+  useEffect(() => {
+  if (step === 2 && showScales) {
+    setShowClickIcon2(true);
+  } else {
+    setShowClickIcon2(false);
+  }
+}, [step, showScales]);
+
   const handleClick = () => {
     if (step === 1) {
       setShowClickIcon(false);
       setShowArrowIcon(true);
       setObjectMoved(true);
+
       setTimeout(() => {
         animate(normalWeightMotion, 30, { duration: 1.5 });
         setTimeout(() => {
@@ -54,16 +68,7 @@ const LeverPage = () => {
           setObjectMoved(false);
           setShowArrowIcon(false);
         }, 1500);
-      }, 1000);
-    } else if (step === 2) {
-      setObjectMoved(true);
-      setTimeout(() => {
-        animate(inclinedWeightMotion, 10, { duration: 1.5 });
-        setTimeout(() => {
-          setStep(3);
-          setIsComplete(true);
-        }, 1500);
-      }, 1000);
+      }, 1500);
     }
   };
 
@@ -71,16 +76,18 @@ const LeverPage = () => {
     if (!leverRotated) {
       setLeverRotated(true);
       setShowLeverIcons(true);
-      
+      setShowClickIcon2(false);
+
       // inclinedWeight 애니메이션 추가
-      animate(inclinedWeightMotion, 10, { duration: 1.5 });
-      
+      animate(inclinedWeightMotion, 10, { duration: 2 });
+
       setTimeout(() => {
         setStep(3);
         setLeverRotated(false);
         setIsComplete(true);
         setShowLeverIcons(false);
-      }, 1500);
+        setLeverComplete(true);
+      }, 2000);
     }
   };
 
@@ -89,22 +96,21 @@ const LeverPage = () => {
       title="힘과 우리의 생활 - 탐구 2 &lt;지레를 이용해 물건 들기&gt;"
       text={
         <motion.span
-          key={isComplete ? 'answer' : 'question'}
+          key={isComplete ? "answer" : "question"}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ 
+          transition={{
             duration: 2,
-            ease: "easeIn"
+            ease: "easeIn",
           }}
-          style={{ 
+          style={{
             whiteSpace: "pre-line",
-            display: "inline-block"
+            display: "inline-block",
           }}
         >
-          {isComplete 
+          {isComplete
             ? "지레를 사용하면 물체를 들어 올리는데 더 적은 힘이 든다는 걸 알 수 있어요"
-            : "물체를 위로 들어 올리는데 필요한 힘이 얼마인지 확인해 보세요."
-          }
+            : "물체를 위로 들어 올리는데 필요한 힘이 얼마인지 확인해 보세요."}
         </motion.span>
       }
       isComplete={isComplete}
@@ -124,8 +130,12 @@ const LeverPage = () => {
           />
         </svg>
 
-        <p>그냥 들어 올릴 때: <motion.span>{normalWeight}</motion.span>g</p>
-        <p>지레를 사용할 때: <motion.span>{inclinedWeight}</motion.span>g</p>
+        <p>
+          그냥 들어 올릴 때: <motion.span>{normalWeight}</motion.span>g
+        </p>
+        <p>
+          지레를 사용할 때: <motion.span>{inclinedWeight}</motion.span>g
+        </p>
       </ScalesText>
 
       <Content>
@@ -182,37 +192,35 @@ const LeverPage = () => {
             )}
           </>
         )}
+
+        {/* step2 rotate가 처음에 애니메이션으로 움직이는데 움직이지 않고 기본값으로 떠있어야 함 */}
         {step >= 2 && (
           <>
             <div className="lever-outer">
-              <img
-                src={leverImg}
-                alt="lever"
-                className="lever-bg"
-              />
+              <img src={leverImg} alt="lever" className="lever-bg" />
               <motion.div
                 className="lever"
+                initial={{ rotate: -10 }}
                 animate={{
                   rotate: step === 2 ? (leverRotated ? 10 : -10) : 10,
                 }}
-                transition={{ duration: 1, ease: "easeInOut" }}
+                transition={{ duration: 2, ease: "easeInOut" }}
                 style={{
                   position: "absolute",
                   left: "0px",
                   top: "0px",
                   transformOrigin: "220px 100px",
-                  zIndex: 2
+                  zIndex: 2,
                 }}
               >
-                {/* 오른쪽 끝 클릭 영역 */}
                 {step === 2 && (
                   <div
                     style={{
                       position: "absolute",
                       right: 0,
                       top: "50%",
-                      width: 60,
-                      height: 60,
+                      width: 100,
+                      height: 100,
                       transform: "translateY(-50%)",
                       cursor: "pointer",
                       zIndex: 2,
@@ -222,30 +230,26 @@ const LeverPage = () => {
                 )}
               </motion.div>
 
-              {
-                step === 2 && (
-                  <>
-                  <motion.img
-                    src={click}
-                    alt="click"
-                    className="click-icon2"
-                    animate={{
-                      scale: [1, 0.9, 1],
-                      y: [0, 1, 0],
-                      opacity: [1, 0.8, 1],
-                    }}
-                    transition={{
-                      repeat: Infinity,
-                      repeatType: "loop",
-                      duration: 2,
-                      ease: "easeInOut",
-                    }}
-                    onClick={handleLeverClick}
-                  />
-                  </>
-                )
-              }
-              {/* step2에서 handleLeverClick 을 실행하면 나타나는 클릭/화살표 아이콘 */}
+              {showClickIcon2 && (
+                <motion.img
+                  src={click}
+                  alt="click"
+                  className="click-icon2"
+                  animate={{
+                    scale: [1, 0.9, 1],
+                    y: [0, 1, 0],
+                    opacity: [1, 0.8, 1],
+                  }}
+                  transition={{
+                    repeat: Infinity,
+                    repeatType: "loop",
+                    duration: 2,
+                    ease: "easeInOut",
+                  }}
+                  onClick={handleLeverClick}
+                />
+              )}
+
               {showLeverIcons && (
                 <>
                   <motion.img
@@ -254,7 +258,7 @@ const LeverPage = () => {
                     className="arrow-icon2"
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1.2 }}
+                    transition={{ duration: 2 }}
                   />
                   <motion.img
                     src={arrow}
@@ -262,10 +266,10 @@ const LeverPage = () => {
                     className="arrow-icon3"
                     initial={{ opacity: 0, y: -50, rotate: 180 }}
                     animate={{ opacity: 1, y: 0, rotate: 180 }}
-                    transition={{ duration: 1.2, delay: 0.3 }}
+                    transition={{ duration: 2 }}
                   />
                 </>
-              )} 
+              )}
             </div>
           </>
         )}

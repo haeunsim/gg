@@ -165,6 +165,7 @@ const Item = styled(motion.div)`
     width: 100%;
     height: 300px;
     border-radius: 20px;
+
     > img {
       width: 90%;
     }
@@ -174,6 +175,10 @@ const Item = styled(motion.div)`
     }
     &.slope img {
       width: 80%;
+    }
+
+    @media (max-width: 1024px) {
+      height: 190px;
     }
   }
 

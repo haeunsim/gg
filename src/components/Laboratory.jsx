@@ -3,13 +3,26 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import desk from "../assets/images/bg-desk.png";
 import { motion } from "framer-motion";
+import useExperimentStore from "../store/experimentStore";
 
 const Laboratory = ({ title, children, text, isComplete, className }) => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const state = useExperimentStore();
 
   const handleSelectClick = () => {
-    if (isComplete) {
+    let isExperimentComplete = false;
+    
+    // 각 페이지별 완료 상태 확인
+    if (title.includes("양팔저울")) {
+      isExperimentComplete = state.isBalanceComplete;
+    } else if (title.includes("지레")) {
+      isExperimentComplete = state.isLeverComplete;
+    } else if (title.includes("빗면")) {
+      isExperimentComplete = state.isSlopeComplete;
+    }
+
+    if (isExperimentComplete) {
       navigate("/select");
     } else {
       setIsModalOpen(true);
@@ -24,8 +37,6 @@ const Laboratory = ({ title, children, text, isComplete, className }) => {
   const handleModalCancel = () => {
     setIsModalOpen(false);
   };
-
-
 
   return (
     <Wrap className={className}>
@@ -176,6 +187,12 @@ const Button = styled.button`
   &:hover {
     background: #ffa94d;
     cursor: pointer;
+  }
+
+  @media (max-width: 1024px) {
+    right: 40px;
+    width: 220px;
+    font-size: 1.4rem;
   }
 `;
 

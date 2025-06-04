@@ -144,7 +144,7 @@ const SlopePage = () => {
                     : { x: -128, y: 30, rotate: 60 }
                   : { x: 258, y: -194, rotate: 60 }
               }
-              transition={{ duration: 2, ease: "easeInOut" }}
+              transition={step === 2 && !objectMoved ? { duration: 0 } : { duration: 2, ease: "easeInOut" }}
               onClick={handleClick}
             >
               <motion.div

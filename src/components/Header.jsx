@@ -114,7 +114,12 @@ const Head = styled.header`
       box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.6);
       font-weight: 700;
     }
+
+    @media (max-width: 1024px) {
+      display: none;
+    }
   }
+
 
   .icons {
     display: flex;
