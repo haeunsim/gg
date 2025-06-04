@@ -206,7 +206,7 @@ const Button = styled.button`
   background: #1499ff;
   box-shadow: 0px -8px 0px 0px #0056d6 inset;
   color: #fff;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   font-family: "HakgyoansimDunggeunmisoTTF-B";
 
   &:hover {
