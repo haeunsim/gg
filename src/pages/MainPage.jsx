@@ -47,9 +47,9 @@ const MainPage = () => {
                 <path
                   d="M4 4L14 13.5L4 23"
                   stroke="white"
-                  stroke-width="8"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
             </div>

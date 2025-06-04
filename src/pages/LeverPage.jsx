@@ -7,6 +7,7 @@ import leverImg from "../assets/images/lever.png";
 import leverArmImg from "../assets/images/lever_arm2.png";
 import click from "../assets/images/hand.png";
 import arrow from "../assets/images/arrow.png";
+import useExperimentStore from "../store/experimentStore";
 
 const LeverPage = () => {
   const [step, setStep] = useState(1);
@@ -18,6 +19,8 @@ const LeverPage = () => {
   const [showClickIcon, setShowClickIcon] = useState(false);
   const [showArrowIcon, setShowArrowIcon] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
+  const [showLeverIcons, setShowLeverIcons] = useState(false);
+  const setLeverComplete = useExperimentStore((state) => state.setLeverComplete);
 
   const normalWeightMotion = useMotionValue(0);
   const normalWeight = useTransform(normalWeightMotion, (latest) => {
@@ -73,10 +76,13 @@ const LeverPage = () => {
   const handleLeverClick = () => {
     if (!leverRotated) {
       setLeverRotated(true);
+      setShowLeverIcons(true);
       setTimeout(() => {
         setStep(3);
         setLeverRotated(false);
         setIsComplete(true);
+        setShowLeverIcons(false);
+        setLeverComplete(true);
       }, 1500);
     }
   };
@@ -182,13 +188,11 @@ const LeverPage = () => {
         {step >= 2 && (
           <>
             <div className="lever-outer">
-              {/* 받침대는 항상 고정 */}
               <img
                 src={leverImg}
                 alt="lever"
                 className="lever-bg"
               />
-              {/* 팔만 motion.div로 회전 */}
               <motion.div
                 className="lever"
                 animate={{
@@ -197,9 +201,10 @@ const LeverPage = () => {
                 transition={{ duration: 1, ease: "easeInOut" }}
                 style={{
                   position: "absolute",
-                  left: 0,
-                  bottom: 0,
-                  zIndex: 2,
+                  left: "0px",
+                  top: "0px",
+                  transformOrigin: "220px 100px",
+                  zIndex: 2
                 }}
               >
                 {/* 오른쪽 끝 클릭 영역 */}
@@ -220,9 +225,9 @@ const LeverPage = () => {
                 )}
               </motion.div>
 
-              {/* step2에서만 보이는 클릭/화살표 아이콘 */}
-              {step === 2 && (
-                <>
+              {
+                step === 2 && (
+                  <>
                   <motion.img
                     src={click}
                     alt="click"
@@ -238,12 +243,19 @@ const LeverPage = () => {
                       duration: 2,
                       ease: "easeInOut",
                     }}
+                    onClick={handleLeverClick}
                   />
+                  </>
+                )
+              }
+              {/* step2에서 handleLeverClick 을 실행하면 나타나는 클릭/화살표 아이콘 */}
+              {showLeverIcons && (
+                <>
                   <motion.img
                     src={arrow}
                     alt="arrow"
                     className="arrow-icon2"
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1.2 }}
                   />
@@ -251,12 +263,12 @@ const LeverPage = () => {
                     src={arrow}
                     alt="arrow"
                     className="arrow-icon3"
-                    initial={{ opacity: 0, y: 30, rotate:180 }}
+                    initial={{ opacity: 0, y: -50, rotate: 180 }}
                     animate={{ opacity: 1, y: 0, rotate: 180 }}
                     transition={{ duration: 1.2, delay: 0.3 }}
                   />
                 </>
-              )}
+              )} 
             </div>
           </>
         )}
@@ -367,7 +379,7 @@ const Content = styled.div`
   .lever-outer {
     position: absolute;
     left: 50%;
-    bottom: 60px;
+    bottom: 100px;
     transform: translateX(-50%);
     width: 600px;
     height: 150px;
@@ -375,7 +387,7 @@ const Content = styled.div`
   .lever-bg {
     position: absolute;
     left: 200px;
-    bottom: -80px;
+    bottom: -60px;
     width: 97px;
     height: 90px;
     z-index: 1;
@@ -383,8 +395,8 @@ const Content = styled.div`
   }
   .lever {
     position: absolute;
-    left: -200px;
-    bottom: 0;
+    left: 0px;
+    bottom: 0px;
     width: 600px;
     height: 150px;
     background: url(${leverArmImg}) no-repeat;
@@ -403,16 +415,17 @@ const Content = styled.div`
   .arrow-icon2 {
     width: 60px;
     position: absolute;
-    left: 60px;
-    top: 10px;
+    left: 0px;
+    top: 120px;
     z-index: 3;
+    cursor: default;
   }
   .arrow-icon3 {
     width: 60px;
     position: absolute;
-    /* left: 420px; */
-    right: 60px;
-    top: 60px;
+    right: 0px;
+    top: 40px;
     z-index: 3;
+    cursor: default;
   }
 `;

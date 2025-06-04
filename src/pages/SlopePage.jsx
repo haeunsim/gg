@@ -7,6 +7,7 @@ import objectSpringImg from "../assets/images/object-spring.png";
 import objectImg from "../assets/images/object-hook.png";
 import slopeImg from "../assets/images/slope.png";
 import arrow from "../assets/images/arrow.png";
+import useExperimentStore from "../store/experimentStore";
 
 const SlopePage = () => {
   const [step, setStep] = useState(1);
@@ -19,6 +20,7 @@ const SlopePage = () => {
   const [showClickIcon2, setShowClickIcon2] = useState(false);
   const [showArrowIcon2, setShowArrowIcon2] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
+  const setSlopeComplete = useExperimentStore((state) => state.setSlopeComplete);
 
   const normalWeightMotion = useMotionValue(0);
   const normalWeight = useTransform(normalWeightMotion, (latest) => {
@@ -76,6 +78,7 @@ const SlopePage = () => {
           setObjectMoved(false);
           setShowArrowIcon2(false);
           setIsComplete(true);
+          setSlopeComplete(true);
         }, 1500);
       }, 1000);
     }

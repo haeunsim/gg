@@ -51,10 +51,10 @@ const Layer = styled.div`
 
 const BgIcon1 = styled(motion.div)`
   position: absolute;
-  top: ${props => props.isMain ? '25%' : '9%'};
-  left: ${props => props.isMain ? '10%' : '5%'};
-  width: ${props => props.isMain ? '280px' : '170px'};
-  height: ${props => props.isMain ? '280px' : '170px'};
+  top: ${props => props.$isMain ? '25%' : '9%'};
+  left: ${props => props.$isMain ? '10%' : '5%'};
+  width: ${props => props.$isMain ? '280px' : '170px'};
+  height: ${props => props.$isMain ? '280px' : '170px'};
   background-image: url(${bgIcon1});
   background-size: contain;
   background-repeat: no-repeat;
@@ -65,10 +65,10 @@ const BgIcon1 = styled(motion.div)`
 
 const BgIcon2 = styled(motion.div)`
   position: absolute;
-  top: ${props => props.isMain ? '60%' : '20%'};
-  left: ${props => props.isMain ? '4%' : '25%'};
-  width: ${props => props.isMain ? '170px' : '120px'};
-  height: ${props => props.isMain ? '170px' : '120px'};
+  top: ${props => props.$isMain ? '60%' : '20%'};
+  left: ${props => props.$isMain ? '4%' : '25%'};
+  width: ${props => props.$isMain ? '170px' : '120px'};
+  height: ${props => props.$isMain ? '170px' : '120px'};
   background-image: url(${bgIcon2});
   background-size: contain;
   background-repeat: no-repeat;
@@ -79,10 +79,10 @@ const BgIcon2 = styled(motion.div)`
 
 const BgIcon3 = styled(motion.div)`
   position: absolute;
-  top: ${props => props.isMain ? '38%' : '18%'};
-  right: ${props => props.isMain ? '10%' : '28%'};
-  width: ${props => props.isMain ? '220px' : '170px'};
-  height: ${props => props.isMain ? '220px' : '170px'};
+  top: ${props => props.$isMain ? '38%' : '18%'};
+  right: ${props => props.$isMain ? '10%' : '28%'};
+  width: ${props => props.$isMain ? '220px' : '170px'};
+  height: ${props => props.$isMain ? '220px' : '170px'};
   background-image: url(${bgIcon3});
   background-size: contain;
   background-repeat: no-repeat;
@@ -93,10 +93,10 @@ const BgIcon3 = styled(motion.div)`
 
 const BgIcon4 = styled(motion.div)`
   position: absolute;
-  top: ${props => props.isMain ? '12%' : '15%'};
-  right: ${props => props.isMain ? '7%' : '5%'};
-  width: ${props => props.isMain ? '180px' : '170px'};
-  height: ${props => props.isMain ? '180px' : '170px'};
+  top: ${props => props.$isMain ? '12%' : '15%'};
+  right: ${props => props.$isMain ? '7%' : '5%'};
+  width: ${props => props.$isMain ? '180px' : '170px'};
+  height: ${props => props.$isMain ? '180px' : '170px'};
   background-image: url(${bgIcon4});
   background-size: contain;
   background-repeat: no-repeat;
@@ -110,7 +110,7 @@ const Container = ({ children, isMain }) => {
     <Wrap>
       <Layer>
         <BgIcon1 
-          isMain={isMain}
+          $isMain={isMain}
           animate={{ y: [0, -10, 0] }}
           transition={{
             duration: 4,
@@ -119,7 +119,7 @@ const Container = ({ children, isMain }) => {
           }}
         />
         <BgIcon2 
-          isMain={isMain}
+          $isMain={isMain}
           animate={{ y: [0, -15, 0] }}
           transition={{
             duration: 5,
@@ -128,7 +128,7 @@ const Container = ({ children, isMain }) => {
           }}
         />
         <BgIcon3 
-          isMain={isMain}
+          $isMain={isMain}
           animate={{ y: [0, -8, 0] }}
           transition={{
             duration: 4.5,
@@ -137,7 +137,7 @@ const Container = ({ children, isMain }) => {
           }}
         />
         <BgIcon4 
-          isMain={isMain}
+          $isMain={isMain}
           animate={{ y: [0, -12, 0] }}
           transition={{
             duration: 5.5,

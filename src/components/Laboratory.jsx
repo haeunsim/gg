@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import desk from "../assets/images/bg-desk.png";
@@ -6,6 +6,24 @@ import { motion } from "framer-motion";
 
 const Laboratory = ({ title, children, text, isComplete, className }) => {
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleSelectClick = () => {
+    if (isComplete) {
+      navigate("/select");
+    } else {
+      setIsModalOpen(true);
+    }
+  };
+
+  const handleModalConfirm = () => {
+    setIsModalOpen(false);
+    navigate("/select");
+  };
+
+  const handleModalCancel = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <Wrap className={className}>
@@ -16,7 +34,7 @@ const Laboratory = ({ title, children, text, isComplete, className }) => {
         </Item>
       </Nav>
 
-      <Button onClick={() => navigate("/select")}>
+      <Button onClick={handleSelectClick}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="23"
@@ -46,12 +64,48 @@ const Laboratory = ({ title, children, text, isComplete, className }) => {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.5 }}
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" viewBox="0 0 70 70" fill="none">
-            <circle cx="35" cy="35" r="35" fill="white"/>
-            <path d="M21 38.6552L29.1441 47L52 25" stroke="#34C9FF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="70"
+            height="70"
+            viewBox="0 0 70 70"
+            fill="none"
+          >
+            <circle cx="35" cy="35" r="35" fill="white" />
+            <path
+              d="M21 38.6552L29.1441 47L52 25"
+              stroke="#34C9FF"
+              strokeWidth="6"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
           <p>{text}</p>
         </ResultText>
+      )}
+
+      {isModalOpen && (
+        <>
+          <ModalOverlay />
+          <Modal>
+            <div className="modal">
+              <div className="modal__title">안내</div>
+              <div className="modal__message">
+                <p>활동을 마치지 않아</p>
+                <p>처음부터 다시 시작해야 할 수 있습니다.</p>
+                <p>정말로 종료하시겠습니까?</p>
+              </div>
+              <div className="modal__buttons">
+                <button className="modal__button modal__button--cancel" onClick={handleModalCancel}>
+                  아니요
+                </button>
+                <button className="modal__button modal__button--confirm" onClick={handleModalConfirm}>
+                  예
+                </button>
+              </div>
+            </div>
+          </Modal>
+        </>
       )}
 
       <div className="bg-floor"></div>
@@ -65,12 +119,7 @@ const Wrap = styled.div`
   position: relative;
   width: 100%;
   height: 100vh;
-  /* background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.61) 0%,
-    rgba(114, 208, 255, 0.61) 100%
-  ); */
-  background: linear-gradient(0deg, #E0EFFF 23.62%, #4197D8 178.01%);
+  background: linear-gradient(0deg, #e0efff 23.62%, #4197d8 178.01%);
   box-sizing: border-box;
   overflow: hidden;
 
@@ -120,7 +169,6 @@ const Button = styled.button`
   top: 110px;
   right: 80px;
   display: flex;
-  /* padding: 1rem; */
   justify-content: center;
   align-items: center;
   gap: 14px;
@@ -133,7 +181,7 @@ const Button = styled.button`
   cursor: pointer;
   border: none;
   transition: all 0.2s ease;
-  
+
   &:hover {
     background: #ffa94d;
     cursor: pointer;
@@ -178,7 +226,12 @@ const ResultText = styled(motion.div)`
   height: 200px;
   border-top: 2px solid rgba(255, 255, 255, 0.5);
   border-bottom: 2px solid rgba(255, 255, 255, 0.5);
-  background: linear-gradient(90deg, rgba(186, 225, 255, 0.00) 0%, #89E3FF 50%, rgba(186, 225, 255, 0.00) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(186, 225, 255, 0) 0%,
+    #89e3ff 50%,
+    rgba(186, 225, 255, 0) 100%
+  );
   display: flex;
   align-items: center;
   justify-content: center;
@@ -193,8 +246,83 @@ const ResultText = styled(motion.div)`
     top: -16%;
   }
   p {
-    color: #0C3554;
+    color: #0c3554;
     font-size: clamp(1.8rem, 4vw, 3rem);
     font-weight: 400;
   }
-`
+`;
+const Modal = styled.div`
+  width: 80%;
+  height: 80%;
+  max-width: 860px;
+  max-height: 530px;
+  background: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999999;
+  border-radius: 50px;
+  overflow: hidden;
+  
+  .modal {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+  }
+  .modal__title {
+    width: 100%;
+    background: #0c3554;
+    color: #fff;
+    text-align: center;
+    padding: 16px 0;
+    font-size: 38px;
+    font-family: "HakgyoansimDunggeunmisoTTF-B";
+  }
+  .modal__message {
+    font-size: 26px;
+    text-align: center;
+    line-height: 50px;
+    color: #0c3554;
+  }
+  .modal__buttons {
+    display: flex;
+    gap: 32px;
+    padding-bottom: 40px;
+
+    .modal__button {
+      display: flex;
+      width: 280px;
+      height: 80px;
+      padding: 19px 0px;
+      justify-content: center;
+      align-items: center;
+      color: #FFF;
+      font-family: "HakgyoansimDunggeunmisoTTF-B";
+      font-size: 34px;
+    }
+    .modal__button--cancel {
+      border-radius: 50px;
+      background: #ff962c;
+      box-shadow: 0px -5.658px 0px 0px #ff5c16 inset;
+    }
+    .modal__button--confirm {
+      border-radius: 50px;
+      background: #1499ff;
+      box-shadow: 0px -5.658px 0px 0px #0056d6 inset;
+    }
+  }
+`;
+
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.5);
+  z-index: 9999998;
+`;

@@ -7,6 +7,7 @@ import balanceScaleImg from "../assets/images/balance_scale.png";
 import balanceArmImg from "../assets/images/balance_arm.png";
 import { motion } from "framer-motion";
 import Laboratory from "../components/Laboratory";
+import useExperimentStore from "../store/experimentStore";
 
 const typingTextQ = "Q. 물체를 양팔저울 위에 올려 무게를 비교해 보세요.";
 const typingTextA = "나무조각보다 철조각이 더 무겁다는 것을 알 수 있어요.";
@@ -18,6 +19,7 @@ const BalancePage = () => {
   const [dragPosition, setDragPosition] = useState({ x: 0, y: 0 });
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [clickedItem, setClickedItem] = useState(null);
+  const setBalanceComplete = useExperimentStore((state) => state.setBalanceComplete);
 
   const handleDrop = (side, item) => {
     if (side === "left") setLeftItem(item);
@@ -38,6 +40,13 @@ const BalancePage = () => {
   };
 
   const isComplete = leftItem && rightItem;
+
+  // 실험 완료 상태 업데이트
+  useEffect(() => {
+    if (isComplete) {
+      handleExperimentComplete();
+    }
+  }, [isComplete]);
 
   // 마우스 이동 이벤트 핸들러
   useEffect(() => {
@@ -86,6 +95,10 @@ const BalancePage = () => {
       window.removeEventListener('mouseup', handleMouseUp);
     };
   }, [clickedItem, mousePosition]);
+
+  const handleExperimentComplete = () => {
+    setBalanceComplete(true);
+  };
 
   return (
     <Laboratory 

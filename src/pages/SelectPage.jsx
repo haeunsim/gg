@@ -1,11 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Container from "../components/Container";
 import Header from "../components/HeaderWhite";
+import useExperimentStore from "../store/experimentStore";
 
 const SelectPage = () => {
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const isAllComplete = useExperimentStore((state) => state.isAllComplete());
+
+  const handleExitClick = () => {
+    if (isAllComplete) {
+      navigate("/result");
+    } else {
+      setIsModalOpen(true);
+    }
+  };
+
+  const handleModalConfirm = () => {
+    setIsModalOpen(false);
+    navigate("/goals");
+  };
+
+  const handleModalCancel = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <Container>
@@ -32,11 +52,35 @@ const SelectPage = () => {
         </Item>
       </Flex>
 
-      <Button onClick={() => navigate("/result")}>실험 종료</Button>
-      {/* 모든 실험 활동을 실행했을 때만 배운 내용 화면으로 이동, (result) */}
-      {/* "활동을 마치지 않아 처음부터 다시 시작해야 할 수 있습니다! 정말로 종료하시겠습니까?"
-      모달에 "예","아니요" 버튼 추가 */}
-      {/* "예" : 아무 실험도 하지 않았거나 일부만 했을 때 -> 배운 내용 화면은 스킵, 학습 목표 화면으로 이동  */}
+      <Button onClick={handleExitClick}>실험 종료</Button>
+      {/* 모든 실험 활동을 완료했을 때만 배운 내용 화면으로 이동, (/result) */}
+      {/* 모든 실험 활동을 완료하지않았을 경우, (각 실험의 isComplete 가 필요하다. -> zustand 추가 관리가 필요함)
+      "활동을 마치지 않아 처음부터 다시 시작해야 할 수 있습니다! 정말로 종료하시겠습니까?" 모달에 "예","아니요" 버튼 추가 */}
+      {/* "예" : 아무 실험도 하지 않았거나 일부만 했을 때 -> 배운 내용 화면은 스킵, 학습 목표 화면으로 이동 (/goals)  */}
+      {isModalOpen && (
+        <>
+          <ModalOverlay />
+          <Modal>
+            <div className="modal">
+              <div className="modal__title">안내</div>
+              <div className="modal__message">
+                <p>활동을 마치지 않아</p>
+                <p>처음부터 다시 시작해야 할 수 있습니다.</p>
+                <p>정말로 종료하시겠습니까?</p>
+              </div>
+              <div className="modal__buttons">
+                <button className="modal__button modal__button--cancel" onClick={handleModalCancel}>
+                  아니요
+                </button>
+                <button className="modal__button modal__button--confirm" onClick={handleModalConfirm}>
+                  예
+                </button>
+              </div>
+            </div>
+          </Modal>
+        </>
+      )}
+
     </Container>
   );
 };
@@ -112,4 +156,80 @@ const Badge = styled.span`
   padding: 8px 20px;
   font-family: 'HakgyoansimDunggeunmisoTTF-B';
 `
+const Modal = styled.div`
+  width: 80%;
+  height: 80%;
+  max-width: 860px;
+  max-height: 530px;
+  background: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999999;
+  border-radius: 50px;
+  overflow: hidden;
+  
+  .modal {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+  }
+  .modal__title {
+    width: 100%;
+    background: #0c3554;
+    color: #fff;
+    text-align: center;
+    padding: 16px 0;
+    font-size: 38px;
+    font-family: "HakgyoansimDunggeunmisoTTF-B";
+  }
+  .modal__message {
+    font-size: 26px;
+    text-align: center;
+    line-height: 50px;
+    color: #0c3554;
+  }
+  .modal__buttons {
+    display: flex;
+    gap: 32px;
+    padding-bottom: 40px;
+
+    .modal__button {
+      display: flex;
+      width: 280px;
+      height: 80px;
+      padding: 19px 0px;
+      justify-content: center;
+      align-items: center;
+      color: #FFF;
+      font-family: "HakgyoansimDunggeunmisoTTF-B";
+      font-size: 34px;
+    }
+    .modal__button--cancel {
+      border-radius: 50px;
+      background: #ff962c;
+      box-shadow: 0px -5.658px 0px 0px #ff5c16 inset;
+    }
+    .modal__button--confirm {
+      border-radius: 50px;
+      background: #1499ff;
+      box-shadow: 0px -5.658px 0px 0px #0056d6 inset;
+    }
+  }
+`;
+
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.5);
+  z-index: 9999998;
+`;
+
 export default SelectPage;

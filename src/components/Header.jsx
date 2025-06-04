@@ -5,10 +5,10 @@ import styled from "styled-components";
 const Header = () => {
   return (
     <Head>
-      <div class="logo">CHUNJAE</div>
-      <nav class="nav">
+      <div className="logo">CHUNJAE</div>
+      <nav className="nav">
         <a href="#">탐구 목록</a>
-        <a href="#" class="on">
+        <a href="#" className="on">
           가상과학
           <br />
           탐구센터
@@ -16,8 +16,8 @@ const Header = () => {
         <a href="#">교사용 자료</a>
         <a href="#">문의하기</a>
       </nav>
-      <div class="icons">
-        <button class="icon-btn" aria-label="검색">
+      <div className="icons">
+        <button className="icon-btn" aria-label="검색">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="37"
@@ -28,11 +28,11 @@ const Header = () => {
             <path
               d="M35.6 35.6L26 26M16.4 30.8C14.509 30.8 12.6364 30.4275 10.8894 29.7039C9.14227 28.9802 7.55482 27.9195 6.21766 26.5823C4.8805 25.2452 3.8198 23.6577 3.09613 21.9106C2.37247 20.1635 2 18.291 2 16.4C2 14.509 2.37247 12.6364 3.09613 10.8894C3.8198 9.14227 4.8805 7.55482 6.21766 6.21766C7.55482 4.8805 9.14227 3.8198 10.8894 3.09613C12.6364 2.37247 14.509 2 16.4 2C20.2191 2 23.8818 3.51714 26.5823 6.21766C29.2829 8.91818 30.8 12.5809 30.8 16.4C30.8 20.2191 29.2829 23.8818 26.5823 26.5823C23.8818 29.2829 20.2191 30.8 16.4 30.8Z"
               stroke="white"
-              stroke-width="3"
+              strokeWidth="3"
             />
           </svg>
         </button>
-        <button class="icon-btn" aria-label="마이페이지">
+        <button className="icon-btn" aria-label="마이페이지">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="37"
@@ -46,7 +46,7 @@ const Header = () => {
             />
           </svg>
         </button>
-        <button class="icon-btn" aria-label="메뉴">
+        <button className="icon-btn" aria-label="메뉴">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="32"
@@ -54,7 +54,7 @@ const Header = () => {
             viewBox="0 0 32 36"
             fill="none"
           >
-            <g clip-path="url(#clip0_351_819)">
+            <g clipPath="url(#clip0_351_819)">
               <path
                 d="M0 6.75C0 5.50547 1.00547 4.5 2.25 4.5H29.25C30.4945 4.5 31.5 5.50547 31.5 6.75C31.5 7.99453 30.4945 9 29.25 9H2.25C1.00547 9 0 7.99453 0 6.75ZM0 18C0 16.7555 1.00547 15.75 2.25 15.75H29.25C30.4945 15.75 31.5 16.7555 31.5 18C31.5 19.2445 30.4945 20.25 29.25 20.25H2.25C1.00547 20.25 0 19.2445 0 18ZM31.5 29.25C31.5 30.4945 30.4945 31.5 29.25 31.5H2.25C1.00547 31.5 0 30.4945 0 29.25C0 28.0055 1.00547 27 2.25 27H29.25C30.4945 27 31.5 28.0055 31.5 29.25Z"
                 fill="white"
