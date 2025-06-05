@@ -1,10 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-
+import dnLogo from "../assets/images/dnsoft-logo.png"
 const Header = () => {
   return (
     <Head>
-      <div className="logo">CHUNJAE</div>
+      <div className="logo">
+        <img src={dnLogo} alt="dnsoft"/>
+      </div>
       <nav className="nav">
         <a href="#">탐구 목록</a>
         <a href="#" className="on">
@@ -85,14 +87,9 @@ const Head = styled.header`
   padding: 40px 80px;
   box-sizing: border-box;
 
-  .logo {
-    color: #fff;
-    font-family: Mada;
-    font-size: 34px;
-    font-style: normal;
-    font-weight: 900;
-    line-height: normal;
-  }
+  /* .logo {
+    width: 120px;
+  } */
 
   .nav {
     display: flex;
@@ -119,9 +116,33 @@ const Head = styled.header`
     }
   }
 
-
   .icons {
     display: flex;
     gap: 15px;
   }
+
+  @media (max-width: 960px) {
+    padding: 40px 56px 20px;
+
+    .logo img {
+      width: 120px;
+    }
+    .icons svg {
+      width: 28px;
+    }
+  }
+  @media (max-width: 768px) {
+    padding: 30px 20px 20px;
+    
+    .logo img {
+      width: 80px;
+    }
+    .icons {
+      gap: 10px;
+    }
+    .icons svg {
+      width: 20px;
+    }
+  }
+  
 `;

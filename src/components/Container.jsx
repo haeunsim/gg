@@ -38,9 +38,13 @@ const Layer = styled.div`
     bottom: -5%;
     transform: scaleX(-1);
     z-index: 1000;
+
     @media (max-width: 1280px) {
       width: 200px;
       left: 50px;
+    }
+    @media (max-width: 960px) {
+      width: 160px;
     }
   }
   .bee {
@@ -55,6 +59,19 @@ const Layer = styled.div`
       width: 240px;
       right: 50px;
     }
+    @media (max-width: 960px) {
+      width: 180px;
+    }
+  }
+  @media (max-width: 960px) {
+    width: 100%;
+    padding: 60px 40px 0px;
+    margin-top: 30px;
+  }
+  @media (max-width: 960px) {
+    width: 100%;
+    padding: 40px 20px 0px;
+    margin-top: 20px;
   }
 `;
 

@@ -1,11 +1,14 @@
 import React from "react";
 import logo from "../assets/images/logo2.png";
 import styled from "styled-components";
+import dnLogo from "../assets/images/dnsoft-logo2.png"
 
 const HeaderWhite = () => {
   return (
     <Head>
-      <div className="logo">CHUNJAE</div>
+      <div className="logo">
+        <img src={dnLogo} alt="dnsoft"/>
+      </div>
 
       <img src={logo} alt="logo" />
 
@@ -53,12 +56,13 @@ const Head = styled.header`
   box-sizing: border-box;
 
   .logo {
-    color: #0C3554;
-    font-family: Mada;
-    font-size: 30px;
-    font-style: normal;
-    font-weight: 900;
-    line-height: normal;
+    display: flex;
+    align-items: center;
+    
+    img {
+      width: 140px;
+      height: 36px;
+    }
   }
 
   img {

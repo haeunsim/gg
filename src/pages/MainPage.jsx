@@ -72,14 +72,14 @@ const MainPage = () => {
               <div>
                 <Flex>
                   <span>탐구2</span>
-                  <h6>지레를 이용해 물건 들기기</h6>
+                  <h6>지레를 이용해 물건 들기</h6>
                 </Flex>
                 <p>막대 지레를 이용해 무거운 물체를 들어 보아요.</p>
               </div>
               <div>
                 <Flex>
                   <span>탐구3</span>
-                  <h6>빗면을 이용해 물건 들기기</h6>
+                  <h6>빗면을 이용해 물건 들기</h6>
                 </Flex>
                 <p>경사면을 따라 물체를 들어 올려 보아요.</p>
               </div>
@@ -103,8 +103,12 @@ const Logo = styled.div`
   > img {
     width: 100%;
   }
+
   @media (max-width: 1280px) {
-    width: 500px;
+    width: 400px;
+  }
+  @media (max-width: 768px) {
+    width: 280px;
   }
 `;
 const Content = styled.div`
@@ -127,6 +131,7 @@ const Content = styled.div`
   }
   @media (max-width: 1024px) {
     width: 100%;
+    /* height: 500px; */
   }
 `;
 const TapSemester = styled.div`
@@ -148,6 +153,13 @@ const TapSemester = styled.div`
     background: #fff;
     color: #0c3554;
     font-family: "HakgyoansimDunggeunmisoTTF-B";
+  }
+
+  @media (max-width: 768px) {
+    > div {
+      font-size: 1rem;
+      padding: 8px 20px;
+    }
   }
 `;
 const TapGrade = styled.div`
@@ -180,6 +192,12 @@ const TapGrade = styled.div`
     width: 100px;
     padding: 10px;
     cursor: pointer;
+  }
+
+  @media (max-width: 960px) {
+    > div {
+      font-size: 1.25rem;
+    }
   }
 `;
 const TapUnit = styled.div`
@@ -234,7 +252,7 @@ const TapUnit = styled.div`
       max-width: 240px;
       font-size: 1.2rem;
       padding: 15px;
-
+      
       > svg {
         width: 8px;
       }
@@ -243,6 +261,36 @@ const TapUnit = styled.div`
       max-width: 200px;
     }
   }
+
+  @media (max-width: 960px) {
+    flex-direction: row;
+    border-radius: 0px;
+
+    > div {
+      margin-right: 0;
+      border-radius: 0px;
+      text-align: center;
+      
+      &:last-child {
+        border-bottom: 1px solid #adadad;
+      }
+      &.on {
+        border-radius: 0px;
+        margin-right: 0;
+        box-shadow: none;
+      }
+    }
+  }
+  @media (max-width: 768px) {
+    > div {
+      display: none;
+
+      &.on {
+        max-width: 100%;
+        width: 100%;
+        text-align: center;
+      }
+    }
 `;
 
 const View = styled.div`
@@ -252,6 +300,10 @@ const View = styled.div`
   display: flex;
   border-radius: 10px 10px 48px 48px;
   box-shadow: 0px 8px 0px 0px rgba(0, 0, 0, 0.25) inset;
+
+  @media (max-width: 960px) {
+    display: block;
+  }
 `;
 const UnitView = styled.div`
   /* width: 100%; */
@@ -279,12 +331,20 @@ const UnitView = styled.div`
       font-size: 1rem;
     }
   }
+  @media (max-width: 960px) {
+    padding: 20px 40px;
+  }
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 const Img = styled.div`
   display: flex;
   align-items: center;
   width: 340px;
   height: 340px;
+
   > img {
     border-radius: 37px;
     width: 100%;
@@ -292,6 +352,7 @@ const Img = styled.div`
   }
   @media (max-width: 1280px) {
     width: 250px;
+    height: auto;
   }
 `;
 const TextWrap = styled.div`
