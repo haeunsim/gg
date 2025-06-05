@@ -13,7 +13,11 @@ const SelectPage = () => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const isAllComplete = useExperimentStore((state) => state.isAllComplete());
+  const isBalanceComplete = useExperimentStore((state) => state.isBalanceComplete);
+  const isLeverComplete = useExperimentStore((state) => state.isLeverComplete);
+  const isSlopeComplete = useExperimentStore((state) => state.isSlopeComplete);
 
+  // useExperimentStore 에서 isBalanceComplete가 treu라면 done 노출
   const handleExitClick = () => {
     if (isAllComplete) {
       navigate("/result");
@@ -51,6 +55,14 @@ const SelectPage = () => {
           }}
           onClick={() => navigate("/balance")}
         >
+          {isBalanceComplete && (
+            <div className="done">
+              <svg xmlns="http://www.w3.org/2000/svg" width="88" height="88" viewBox="0 0 88 88" fill="none">
+                <circle cx="44" cy="44" r="42" fill="white" stroke="#34C9FF" stroke-width="4"/>
+                <path d="M28 48.1771L37.3075 57.714L63.4286 32.5712" stroke="#34C9FF" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          )}
           <Badge>탐구1</Badge>
           <h4><span>양팔저울</span>로<br/>무게 비교하기</h4>
           <p>수평 잡기를 이용하여<br/>물체의 무게를 비교해 보아요.</p>
@@ -73,6 +85,14 @@ const SelectPage = () => {
           }}
           onClick={() => navigate("/lever")}
         >
+          {isLeverComplete && (
+            <div className="done">
+              <svg xmlns="http://www.w3.org/2000/svg" width="88" height="88" viewBox="0 0 88 88" fill="none">
+                <circle cx="44" cy="44" r="42" fill="white" stroke="#34C9FF" stroke-width="4"/>
+                <path d="M28 48.1771L37.3075 57.714L63.4286 32.5712" stroke="#34C9FF" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          )}
           <Badge>탐구2</Badge>
           <h4><span>지레</span>를 이용해<br/>물건 들기</h4>
           <p>막대 지레를 이용해<br/>무거운 물체를 들어 보아요.</p>
@@ -95,6 +115,14 @@ const SelectPage = () => {
           }}
           onClick={() => navigate("/slope")}
         >
+          {isSlopeComplete && (
+            <div className="done">
+              <svg xmlns="http://www.w3.org/2000/svg" width="88" height="88" viewBox="0 0 88 88" fill="none">
+                <circle cx="44" cy="44" r="42" fill="white" stroke="#34C9FF" stroke-width="4"/>
+                <path d="M28 48.1771L37.3075 57.714L63.4286 32.5712" stroke="#34C9FF" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          )}
           <Badge>탐구3</Badge>
           <h4><span>빗면</span>을 이용해<br/>물건 들기</h4>
           <p>경사면을 따라 물체를<br/>들어 올려 보아요.</p>
@@ -139,6 +167,11 @@ const Title = styled.h2`
   color: #fff;
   font-size: 2.5rem;
   font-family: 'HakgyoansimDunggeunmisoTTF-B';
+
+  @media (max-width: 1280px) {
+    margin: 0 0 40px;
+    font-size: 32px;
+  }
 `;
 
 const Flex = styled.div`
@@ -148,15 +181,34 @@ const Flex = styled.div`
   gap: 1.8rem;
 `;
 const Item = styled(motion.div)`
+  position: relative;
   width: 30%;
-  padding: 1.6rem;
+  padding: 2rem;
   background: #fff;
-  border-radius: 2rem;
+  border-radius: 56px;
   text-align: center;
   cursor: pointer;
   color: #0C3554;
   box-shadow: 0px 10px 20px rgba(12, 53, 84, 0.1);
   
+  .done {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    border-radius: 56px;
+    background-color: #fff;
+    background: linear-gradient(180deg, rgba(137, 227, 255, 0.00) 52.24%, rgba(137, 227, 255, 0.60) 91.85%, #89E3FF 110.26%);
+    
+    svg {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 2rem;
+    }
+  }
+
   .img {
     display: flex;
     align-items: center;
@@ -177,6 +229,9 @@ const Item = styled(motion.div)`
       width: 80%;
     }
 
+    @media (max-width: 1280px) {
+      height: 230px;
+    }
     @media (max-width: 1024px) {
       height: 190px;
     }
@@ -191,8 +246,13 @@ const Item = styled(motion.div)`
     margin: 30px 0;
     font-size: 2rem;
     font-family: 'HakgyoansimDunggeunmisoTTF-R';
+
     span {
       font-family: 'HakgyoansimDunggeunmisoTTF-B';
+    }
+
+    @media (max-width: 1280px) {
+      font-size: 28px;
     }
   }
 `;
@@ -251,7 +311,7 @@ const Modal = styled.div`
     color: #fff;
     text-align: center;
     padding: 16px 0;
-    font-size: 38px;
+    font-size: 2.25rem;
     font-family: "HakgyoansimDunggeunmisoTTF-B";
   }
   .modal__message {
@@ -285,6 +345,17 @@ const Modal = styled.div`
       border-radius: 50px;
       background: #1499ff;
       box-shadow: 0px -5.658px 0px 0px #0056d6 inset;
+    }
+  }
+
+  @media (max-width: 1280px) {
+    max-width: 800px;
+    max-height: 480px;
+
+   .modal__buttons .modal__button {
+      width: 220px;
+      height: 70px;
+      font-size: 28px;
     }
   }
 `;

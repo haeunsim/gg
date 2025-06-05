@@ -99,8 +99,12 @@ export default MainPage;
 const Logo = styled.div`
   width: 630px;
   padding: 20px 0 10px;
+
   > img {
     width: 100%;
+  }
+  @media (max-width: 1280px) {
+    width: 500px;
   }
 `;
 const Content = styled.div`
@@ -117,9 +121,12 @@ const Content = styled.div`
   box-shadow: 0px 20px 0px 0px rgba(0, 0, 0, 0.25);
   z-index: 100;
 
+  @media (max-width: 1280px) {
+    max-width: 900px;
+    height: auto;
+  }
   @media (max-width: 1024px) {
     width: 100%;
-    height: auto;
   }
 `;
 const TapSemester = styled.div`
@@ -201,7 +208,7 @@ const TapUnit = styled.div`
       border-bottom: none;
     }
 
-    @media (max-width: 1024px) {
+    @media (max-width: 1280px) {
       font-size: 1.2rem;
       padding: 15px 25px;
     }
@@ -223,14 +230,17 @@ const TapUnit = styled.div`
     margin-right: 8px; /* 그림자가 짤리지 않도록 오른쪽 여백 추가 */
     cursor: pointer;
 
-    @media (max-width: 1024px) {
-      max-width: 200px;
+    @media (max-width: 1280px) {
+      max-width: 240px;
       font-size: 1.2rem;
       padding: 15px;
 
       > svg {
         width: 8px;
       }
+    }
+    @media (max-width: 1024px) {
+      max-width: 200px;
     }
   }
 `;
@@ -260,7 +270,7 @@ const UnitView = styled.div`
     padding-top: 10px;
   }
 
-  @media (max-width: 1024px) {
+  @media (max-width: 1280px) {
     padding: 20px 10px;
     h6 {
       font-size: 1.2rem;
@@ -280,7 +290,7 @@ const Img = styled.div`
     width: 100%;
     border: 1px solid #808080;
   }
-  @media (max-width: 1024px) {
+  @media (max-width: 1280px) {
     width: 250px;
   }
 `;
@@ -293,7 +303,7 @@ const TextWrap = styled.div`
     font-family: "HakgyoansimDunggeunmisoTTF-R";
   }
 
-  @media (max-width: 1024px) {
+  @media (max-width: 1280px) {
     min-width: 300px;
   }
 `;

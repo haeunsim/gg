@@ -38,6 +38,10 @@ const Layer = styled.div`
     bottom: -5%;
     transform: scaleX(-1);
     z-index: 1000;
+    @media (max-width: 1280px) {
+      width: 200px;
+      left: 50px;
+    }
   }
   .bee {
     position: absolute;
@@ -46,6 +50,11 @@ const Layer = styled.div`
     bottom: -5%;
     transform: scaleX(-1);
     z-index: 1000;
+
+    @media (max-width: 1280px) {
+      width: 240px;
+      right: 50px;
+    }
   }
 `;
 

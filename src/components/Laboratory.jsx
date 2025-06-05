@@ -189,9 +189,10 @@ const Button = styled.button`
     cursor: pointer;
   }
 
-  @media (max-width: 1024px) {
+  @media (max-width: 1280px) {
     right: 40px;
     width: 220px;
+    height: 66px;
     font-size: 1.4rem;
   }
 `;
@@ -259,6 +260,10 @@ const ResultText = styled(motion.div)`
     font-weight: 400;
     padding: 0 40px;
     text-align: center;
+
+    @media (max-width: 1280px) {
+      font-size: 2rem;
+    }
   }
 `;
 const Modal = styled.div`

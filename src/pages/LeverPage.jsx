@@ -292,6 +292,7 @@ const ScalesText = styled.div`
   border: 1px solid #5596cf;
   background: #e9f5ff;
 
+
   &::after {
     content: "";
     position: absolute;
@@ -330,8 +331,6 @@ const ScalesText = styled.div`
     text-align: center;
     font-family: Pretendard;
     font-size: 1.4rem;
-    font-style: normal;
-    font-weight: 500;
     line-height: 2.6rem;
   }
 
@@ -339,6 +338,19 @@ const ScalesText = styled.div`
     display: inline-block;
     width: 40px;
     margin-right: 4px;
+  }
+
+  @media (max-width: 1280px) {
+    width: 340px;
+    svg {
+      width: 34px;
+      top: -16px;
+      left: -16px;
+    }
+    p {
+      font-size: 1.25rem;
+      line-height: 2.2rem;
+    }
   }
 `;
 
@@ -428,5 +440,9 @@ const Content = styled.div`
     top: 40px;
     z-index: 3;
     cursor: default;
+  }
+
+  @media (max-width: 1280px) {
+    height: 540px;
   }
 `;
