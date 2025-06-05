@@ -15,13 +15,13 @@ const useExperimentStore = create((set) => ({
   }
 }));
 
-useExperimentStore.subscribe((state) => {
-  console.log('현재 실험 완료 상태:', {
-    양팔저울: state.isBalanceComplete,
-    지레: state.isLeverComplete,
-    빗면: state.isSlopeComplete,
-    전체완료: state.isAllComplete()
-  });
-});
+// useExperimentStore.subscribe((state) => {
+//   console.log('현재 실험 완료 상태:', {
+//     양팔저울: state.isBalanceComplete,
+//     지레: state.isLeverComplete,
+//     빗면: state.isSlopeComplete,
+//     전체완료: state.isAllComplete()
+//   });
+// });
 
 export default useExperimentStore; 

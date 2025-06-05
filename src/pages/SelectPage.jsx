@@ -17,7 +17,6 @@ const SelectPage = () => {
   const isLeverComplete = useExperimentStore((state) => state.isLeverComplete);
   const isSlopeComplete = useExperimentStore((state) => state.isSlopeComplete);
 
-  // useExperimentStore 에서 isBalanceComplete가 treu라면 done 노출
   const handleExitClick = () => {
     if (isAllComplete) {
       navigate("/result");

@@ -5,7 +5,7 @@ import Container from "../components/Container";
 import gomi from "../assets/images/gomi.png";
 import bee from "../assets/images/bee.png";
 import gomibee from "../assets/images/main-img.png";
-import logo from "../assets/images/main-logo.png";
+import logo from "../assets/images/logo.png";
 import Header from "../components/Header";
 
 const MainPage = () => {
