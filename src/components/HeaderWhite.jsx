@@ -73,4 +73,15 @@ const Head = styled.header`
     display: flex;
     gap: 15px;
   }
+
+  @media (max-width: 768px) {
+    justify-content: center;
+    padding: 15px 0;
+    img {
+      width: 180px;
+    }
+    .logo, .icons {
+      display: none;
+    }
+  }
 `;

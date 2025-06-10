@@ -2,9 +2,9 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Container from "../components/Container";
-import gomi from "../assets/images/gomi.png";
-import bee from "../assets/images/bee.png";
-import gomibee from "../assets/images/main-img.png";
+import character01 from "../assets/images/character01.png";
+import character02 from "../assets/images/character02.png";
+import character03 from "../assets/images/character03.png";
 import logo from "../assets/images/logo.png";
 import Header from "../components/Header";
 
@@ -33,6 +33,29 @@ const MainPage = () => {
           <div>3학년</div>
           <div>4학년</div>
         </TapGrade>
+        <TapGradeMobile className="on" onClick={() => navigate("/goals")}>
+          <div>
+            <span className="on">1학년</span>
+          </div>
+          <div>
+            힘과 우리의 생활
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="27"
+              viewBox="0 0 18 27"
+              fill="none"
+            >
+              <path
+                d="M4 4L14 13.5L4 23"
+                stroke="white"
+                strokeWidth="8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
+        </TapGradeMobile>
         <View>
           <TapUnit>
             <div className="on" onClick={() => navigate("/goals")}>
@@ -59,7 +82,7 @@ const MainPage = () => {
           </TapUnit>
           <UnitView>
             <Img>
-              <img src={gomibee} alt="실험 이미지" />
+              <img src={character03} alt="실험 이미지" />
             </Img>
             <TextWrap>
               <div>
@@ -88,8 +111,8 @@ const MainPage = () => {
         </View>
       </Content>
 
-      <img src={gomi} className="gomi" alt="고미" />
-      <img src={bee} className="bee" alt="버리" />
+      <img src={character01} className="tiger" alt="백호 캐릭터" />
+      <img src={character02} className="fox" alt="여우 캐릭터" />
     </Container>
   );
 };
@@ -109,21 +132,22 @@ const Logo = styled.div`
   }
   @media (max-width: 768px) {
     width: 280px;
+    padding: 0 0 10px;
   }
 `;
 const Content = styled.div`
   width: 90%;
   max-width: 1200px;
-  height: 500px;
-  background: #0c3554;
+  background: #35be9a;
   border-radius: 56px;
   box-sizing: border-box;
-  padding: 12px;
+  padding: 14px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  box-shadow: 0px 20px 0px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 10px 0px 0px rgba(26, 64, 54, 0.2);
   z-index: 100;
+  box-sizing: border-box;
 
   @media (max-width: 1280px) {
     max-width: 900px;
@@ -131,7 +155,11 @@ const Content = styled.div`
   }
   @media (max-width: 1024px) {
     width: 100%;
-    /* height: 500px; */
+  }
+  @media (max-width: 480px) {
+    border-radius: 36px;
+    box-shadow: 0px 8px 0px 0px rgba(0, 0, 0, 0.25);
+    margin-bottom: 20px;
   }
 `;
 const TapSemester = styled.div`
@@ -157,8 +185,49 @@ const TapSemester = styled.div`
 
   @media (max-width: 768px) {
     > div {
-      font-size: 1rem;
+      font-size: 1.2rem;
       padding: 8px 20px;
+    }
+  }
+`;
+const TapGradeMobile = styled.div`
+  display: none;
+  
+  @media (max-width: 480px) {
+    cursor: pointer;
+    display: block;
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 12px;
+
+    > div {
+      flex: 1;
+      text-align: center;
+      color: #fff;
+      font-family: "HakgyoansimDunggeunmisoTTF-B";
+      font-size: 1.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      svg {
+        margin-left: 15px;
+        width: 8px;
+      }
+
+      &:last-child {
+        border-right: none;
+      }
+    }
+    .on {
+      background: #fff;
+      color: #35be9a;
+      font-family: "HakgyoansimDunggeunmisoTTF-B";
+      border-radius: 20px;
+      display: block;
+      width: 80px;
+      padding: 10px;
+      cursor: pointer;
     }
   }
 `;
@@ -184,12 +253,12 @@ const TapGrade = styled.div`
     }
   }
   .on {
-    background: #ff4747;
-    color: #fff;
+    background: #fff;
+    color: #35be9a;
     font-family: "HakgyoansimDunggeunmisoTTF-B";
     border-radius: 20px;
     display: block;
-    width: 100px;
+    width: 80px;
     padding: 10px;
     cursor: pointer;
   }
@@ -197,7 +266,11 @@ const TapGrade = styled.div`
   @media (max-width: 960px) {
     > div {
       font-size: 1.25rem;
+      border-right: 1px solid #fff;
     }
+  }
+  @media (max-width: 480px) {
+    display: none;
   }
 `;
 const TapUnit = styled.div`
@@ -236,12 +309,12 @@ const TapUnit = styled.div`
     gap: 20px;
     width: 320px;
     padding: 30px 18px;
-    background: #ff9270;
+    background: #509CFF;
     color: #fff;
     font-family: "HakgyoansimDunggeunmisoTTF-B";
     font-size: 1.6rem;
     border-radius: 0 20px 20px 0;
-    border: 1px solid #bc2c00;
+    border: 1px solid #2A69BA;
     border-left: none;
     box-shadow: 8px 0px 0px 0px rgba(0, 0, 0, 0.25),
       0px 8px 0px 0px rgba(0, 0, 0, 0.25) inset;
@@ -282,15 +355,8 @@ const TapUnit = styled.div`
     }
   }
   @media (max-width: 768px) {
-    > div {
-      display: none;
-
-      &.on {
-        max-width: 100%;
-        width: 100%;
-        text-align: center;
-      }
-    }
+    display: none;
+  }
 `;
 
 const View = styled.div`
@@ -303,6 +369,9 @@ const View = styled.div`
 
   @media (max-width: 960px) {
     display: block;
+  }
+  @media (max-width: 480px) {
+    border-radius: 10px 10px 30px 30px;
   }
 `;
 const UnitView = styled.div`
@@ -319,13 +388,13 @@ const UnitView = styled.div`
     font-size: 1.125rem;
     font-family: "Pretendard";
     font-weight: 300;
-    padding-top: 10px;
+    padding-top: 8px;
   }
 
   @media (max-width: 1280px) {
     padding: 20px 10px;
     h6 {
-      font-size: 1.2rem;
+      font-size: 16px;
     }
     p {
       font-size: 1rem;
@@ -335,8 +404,10 @@ const UnitView = styled.div`
     padding: 20px 40px;
   }
   @media (max-width: 768px) {
+    padding: 30px 20px;
     flex-direction: column;
     align-items: center;
+    gap: 20px;
   }
 `;
 const Img = styled.div`
@@ -344,12 +415,14 @@ const Img = styled.div`
   align-items: center;
   width: 340px;
   height: 340px;
+  border: 1px solid #808080;
+  overflow: hidden;
+  border-radius: 38px;
 
   > img {
-    border-radius: 37px;
     width: 100%;
-    border: 1px solid #808080;
   }
+
   @media (max-width: 1280px) {
     width: 250px;
     height: auto;
@@ -363,9 +436,9 @@ const TextWrap = styled.div`
   * {
     font-family: "HakgyoansimDunggeunmisoTTF-R";
   }
-
   @media (max-width: 1280px) {
-    min-width: 300px;
+    /* min-width: 300px; */
+    gap: 15px;
   }
 `;
 const Flex = styled.div`

@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
-import bgIcon1 from "../assets/images/bg-icon-01.png";
-import bgIcon2 from "../assets/images/bg-icon-02.png";
-import bgIcon3 from "../assets/images/bg-icon-03.png";
-import bgIcon4 from "../assets/images/bg-icon-04.png";
+import bgIcon1 from "../assets/images/icon-idea.png";
+import bgIcon2 from "../assets/images/icon-search.png";
+import bgIcon3 from "../assets/images/icon-flask.png";
+import bgIcon4 from "../assets/images/icon-microscope.png";
 
 const Wrap = styled.div`
   position: relative;
@@ -16,6 +16,12 @@ const Wrap = styled.div`
   box-sizing: border-box;
   padding: 0 1rem;
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    min-height: 100vh;
+    height: 100%;
+    overflow-y: scroll;
+  }
 `;
 
 const Layer = styled.div`
@@ -23,7 +29,8 @@ const Layer = styled.div`
   height: 100%;
   margin-top: 50px;
   border-radius: 56px 56px 0 0;
-  background: linear-gradient(203deg, #004e8a 12.22%, #50ebf3 114.5%);
+  background: linear-gradient(203deg, #0077d2 12.22%, #91efa3 114.5%);
+  /* background: linear-gradient(203deg, #004e8a 12.22%, #50ebf3 114.5%); */
   box-shadow: 0px 4px 23px 10px rgba(0, 78, 138, 0.6);
   display: flex;
   flex-direction: column;
@@ -31,29 +38,29 @@ const Layer = styled.div`
   padding: 100px 40px 0px;
   box-sizing: border-box;
 
-  .gomi {
+  .tiger {
     position: absolute;
-    width: 239px;
+    width: 340px;
     left: 9%;
-    bottom: -5%;
-    transform: scaleX(-1);
+    bottom: -3%;
     z-index: 1000;
 
     @media (max-width: 1280px) {
-      width: 200px;
+      width: 250px;
       left: 50px;
     }
     @media (max-width: 960px) {
-      width: 160px;
+      width: 180px;
+      display: none;
     }
   }
-  .bee {
+  .fox {
     position: absolute;
-    width: 286px;
-    right: 9%;
-    bottom: -5%;
-    transform: scaleX(-1);
+    width: 310px;
+    right: 10%;
+    bottom: -4%;
     z-index: 1000;
+    overflow: hidden;
 
     @media (max-width: 1280px) {
       width: 240px;
@@ -61,72 +68,78 @@ const Layer = styled.div`
     }
     @media (max-width: 960px) {
       width: 180px;
+      bottom: 0;
+    }
+    @media (max-width: 480px) {
+      right: -12px;
     }
   }
   @media (max-width: 960px) {
     width: 100%;
+    min-height: 100vh;
+    height: 100%;
     padding: 60px 40px 0px;
     margin-top: 30px;
   }
-  @media (max-width: 960px) {
-    width: 100%;
-    padding: 40px 20px 0px;
+  @media (max-width: 480px) {
+    padding: 80px 15px 40px;
     margin-top: 20px;
   }
 `;
 
 const BgIcon1 = styled(motion.div)`
   position: absolute;
-  top: ${props => props.$isMain ? '25%' : '9%'};
-  left: ${props => props.$isMain ? '10%' : '5%'};
-  width: ${props => props.$isMain ? '280px' : '170px'};
-  height: ${props => props.$isMain ? '280px' : '170px'};
+  top: ${(props) => (props.$isMain ? "23%" : "23%")};
+  left: ${(props) => (props.$isMain ? "8%" : "5%")};
+  width: ${(props) => (props.$isMain ? "280px" : "280px")};
+  height: ${(props) => (props.$isMain ? "280px" : "280px")};
   background-image: url(${bgIcon1});
   background-size: contain;
   background-repeat: no-repeat;
-  opacity: 0.5;
+  opacity: 0.15;
   z-index: 1;
   pointer-events: none;
+  /* transform: rotate(-15.58deg); */
 `;
 
 const BgIcon2 = styled(motion.div)`
   position: absolute;
-  top: ${props => props.$isMain ? '60%' : '20%'};
-  left: ${props => props.$isMain ? '4%' : '25%'};
-  width: ${props => props.$isMain ? '170px' : '120px'};
-  height: ${props => props.$isMain ? '170px' : '120px'};
+  top: ${(props) => (props.$isMain ? "63%" : "70%")};
+  left: ${(props) => (props.$isMain ? "7%" : "5%")};
+  width: ${(props) => (props.$isMain ? "179px" : "179px")};
+  height: ${(props) => (props.$isMain ? "200px" : "200px")};
   background-image: url(${bgIcon2});
   background-size: contain;
   background-repeat: no-repeat;
-  opacity: 0.5;
+  opacity: 0.15;
   z-index: 1;
   pointer-events: none;
 `;
 
 const BgIcon3 = styled(motion.div)`
   position: absolute;
-  top: ${props => props.$isMain ? '38%' : '18%'};
-  right: ${props => props.$isMain ? '10%' : '28%'};
-  width: ${props => props.$isMain ? '220px' : '170px'};
-  height: ${props => props.$isMain ? '220px' : '170px'};
+  top: ${(props) => (props.$isMain ? "42%" : "50%")};
+  right: ${(props) => (props.$isMain ? "10%" : "5%")};
+  width: ${(props) => (props.$isMain ? "200px" : "200px")};
+  height: ${(props) => (props.$isMain ? "200px" : "200px")};
   background-image: url(${bgIcon3});
   background-size: contain;
   background-repeat: no-repeat;
-  opacity: 0.5;
+  opacity: 0.15;
   z-index: 1;
   pointer-events: none;
 `;
 
 const BgIcon4 = styled(motion.div)`
   position: absolute;
-  top: ${props => props.$isMain ? '12%' : '15%'};
-  right: ${props => props.$isMain ? '7%' : '5%'};
-  width: ${props => props.$isMain ? '180px' : '170px'};
-  height: ${props => props.$isMain ? '180px' : '170px'};
+  top: ${(props) => (props.$isMain ? "12%" : "10%")};
+  right: ${(props) => (props.$isMain ? "8%" : "10%")};
+  width: ${(props) => (props.$isMain ? "210px" : "210px")};
+  height: ${(props) => (props.$isMain ? "240px" : "240px")};
   background-image: url(${bgIcon4});
   background-size: contain;
   background-repeat: no-repeat;
-  opacity: 0.5;
+  opacity: 0.15;
   z-index: 1;
   pointer-events: none;
 `;
@@ -135,40 +148,48 @@ const Container = ({ children, isMain }) => {
   return (
     <Wrap>
       <Layer>
-        <BgIcon1 
+        <BgIcon1
           $isMain={isMain}
-          animate={{ y: [0, -10, 0] }}
+          animate={{
+            rotate: [-15.58, -15.58, -15.58],
+          }}
           transition={{
             duration: 4,
             repeat: Infinity,
-            ease: "easeInOut"
+            ease: "easeInOut",
           }}
         />
-        <BgIcon2 
+        <BgIcon2
           $isMain={isMain}
-          animate={{ y: [0, -15, 0] }}
+          animate={{
+            rotate: [-18.682, -18.682, -18.682],
+          }}
           transition={{
             duration: 5,
             repeat: Infinity,
-            ease: "easeInOut"
+            ease: "easeInOut",
           }}
         />
-        <BgIcon3 
+        <BgIcon3
           $isMain={isMain}
-          animate={{ y: [0, -8, 0] }}
+          animate={{
+            rotate: [29.002, 29.002, 29.002],
+          }}
           transition={{
             duration: 4.5,
             repeat: Infinity,
-            ease: "easeInOut"
+            ease: "easeInOut",
           }}
         />
-        <BgIcon4 
+        <BgIcon4
           $isMain={isMain}
-          animate={{ y: [0, -12, 0] }}
+          animate={{
+            rotate: [-21.437, -21.437, -21.437],
+          }}
           transition={{
             duration: 5.5,
             repeat: Infinity,
-            ease: "easeInOut"
+            ease: "easeInOut",
           }}
         />
         {children}

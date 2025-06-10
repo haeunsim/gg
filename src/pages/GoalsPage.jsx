@@ -2,18 +2,12 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Container from "../components/Container";
-import icon from "../assets/images/document-icon.png";
-import Header from "../components/HeaderWhite";
-
 const GoalsPage = () => {
   const navigate = useNavigate();
 
   return (
     <Container>
-      <Header/>
-      
       <Wrap>
-        <Title>힘과 우리 생활</Title>
         <ContentHead>
         <h2>
             <svg
@@ -83,13 +77,6 @@ const GoalsPage = () => {
 
 export default GoalsPage;
 
-const Title = styled.h2`
-  text-align: center;
-  margin-bottom: 30px;
-  color: #fff;
-  font-size: 2rem;
-  font-family: "HakgyoansimDunggeunmisoTTF-B";
-`;
 const Wrap = styled.div`
   max-width: 860px;
   width: 100%;
@@ -98,6 +85,10 @@ const Wrap = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+
+  @media (max-width: 960px) {
+    max-width: 90%;
+  }
 `;
 const ContentHead = styled.div`
   display: flex;
@@ -113,13 +104,12 @@ const ContentHead = styled.div`
     align-items: center;
     justify-content: center;
     gap: 12px;
-    font-size: 34px;
+    font-size: 2.125rem;
     font-family: "HakgyoansimDunggeunmisoTTF-B";
   }
 `;
 const Content = styled.div`
   border-radius: 0 0 56px 56px;
-  /* height: 460px; */
   padding: 40px;
   background: #fff;
   display: flex;
@@ -129,13 +119,13 @@ const Content = styled.div`
   gap: 20px;
 
   p {
-    font-size: 30px;
+    font-size: 1.875rem;
     color: #0c3554;
   }
 
   div {
     width: 100%;
-    border-radius: 30px;
+    border-radius: 1.875rem;
     background: #F1F4F7;
     padding: 30px 20px;
     box-sizing: border-box;
@@ -145,7 +135,7 @@ const Content = styled.div`
     
     p {
       position: relative;
-      font-size: 30px;
+      font-size: 1.875rem;
       color: #0C3554;
       padding-left: 30px;
       margin-left: 15px;
@@ -162,6 +152,17 @@ const Content = styled.div`
       }
     }
   }
+  @media (max-width: 480px) {
+    padding: 40px 20px;
+    p {
+      font-size: 20px;
+    }
+    div p {
+      font-size: 1.5rem;
+      margin-left: 5px;
+      padding-left: 20px;
+    }
+  }
 `;
 const Button = styled.button`
   max-width: 280px;
@@ -171,7 +172,12 @@ const Button = styled.button`
   background: #1499FF;
   box-shadow: 0px -5.658px 0px 0px #0056D6 inset;
   color: #fff;
-  font-size: 34px;
-  /* margin-top: 40px; */
+  font-size: 2.125rem;
   font-family: "HakgyoansimDunggeunmisoTTF-B";
+
+  @media (max-width: 480px) {
+    width: 180px;
+    height: 60px;
+    font-size: 22px;
+  }
 `;

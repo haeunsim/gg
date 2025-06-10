@@ -143,6 +143,10 @@ const Nav = styled.div`
   justify-content: space-between;
   background: linear-gradient(180deg, #fff -25%, #a8deff 342.95%);
   box-sizing: border-box;
+
+  @media (max-width: 480px) {
+    padding: 16px;
+  }
 `;
 
 const Main = styled.div`
@@ -195,6 +199,13 @@ const Button = styled.button`
     height: 66px;
     font-size: 1.4rem;
   }
+  @media (max-width: 480px) {
+    width: 160px;
+    height: 40px;
+    font-size: 1rem;
+    right: 10px;
+    top: 85px;
+  }
 `;
 
 const Badge = styled.div`
@@ -203,6 +214,7 @@ const Badge = styled.div`
   color: #fff;
   padding: 6px 20px;
   font-size: 1.4rem;
+  white-space: nowrap;
 `;
 
 const Text = styled.div`
@@ -279,7 +291,7 @@ const Modal = styled.div`
   z-index: 9999999;
   border-radius: 50px;
   overflow: hidden;
-  
+
   .modal {
     width: 100%;
     height: 100%;
@@ -289,6 +301,7 @@ const Modal = styled.div`
     justify-content: space-between;
     box-sizing: border-box;
   }
+
   .modal__title {
     width: 100%;
     background: #0c3554;
@@ -298,16 +311,21 @@ const Modal = styled.div`
     font-size: 38px;
     font-family: "HakgyoansimDunggeunmisoTTF-B";
   }
+
   .modal__message {
     font-size: 26px;
     text-align: center;
     line-height: 50px;
     color: #0c3554;
+    padding: 0 20px;
   }
+
   .modal__buttons {
     display: flex;
     gap: 32px;
     padding-bottom: 40px;
+    flex-wrap: wrap;
+    justify-content: center;
 
     .modal__button {
       display: flex;
@@ -316,22 +334,54 @@ const Modal = styled.div`
       padding: 19px 0px;
       justify-content: center;
       align-items: center;
-      color: #FFF;
+      color: #fff;
       font-family: "HakgyoansimDunggeunmisoTTF-B";
       font-size: 34px;
-    }
-    .modal__button--cancel {
       border-radius: 50px;
+
+      @media (max-width: 480px) {
+        width: 160px;
+        height: 60px;
+        font-size: 22px;
+        padding: 12px 0;
+      }
+    }
+
+    .modal__button--cancel {
       background: #ff962c;
       box-shadow: 0px -5.658px 0px 0px #ff5c16 inset;
     }
+
     .modal__button--confirm {
-      border-radius: 50px;
       background: #1499ff;
       box-shadow: 0px -5.658px 0px 0px #0056d6 inset;
     }
   }
+
+  @media (max-width: 480px) {
+    width: 90%;
+    height: auto;
+    max-height: 90%;
+    border-radius: 30px;
+
+    .modal__title {
+      font-size: 26px;
+      padding: 12px 0;
+    }
+
+    .modal__message {
+      font-size: 18px;
+      line-height: 30px;
+      padding: 40px 20px;
+    }
+
+    .modal__buttons {
+      gap: 16px;
+      padding-bottom: 20px;
+    }
+  }
 `;
+
 
 const ModalOverlay = styled.div`
   position: fixed;

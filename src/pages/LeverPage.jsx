@@ -48,12 +48,12 @@ const LeverPage = () => {
   }, [step, showScales]);
 
   useEffect(() => {
-  if (step === 2 && showScales) {
-    setShowClickIcon2(true);
-  } else {
-    setShowClickIcon2(false);
-  }
-}, [step, showScales]);
+    if (step === 2 && showScales) {
+      setShowClickIcon2(true);
+    } else {
+      setShowClickIcon2(false);
+    }
+  }, [step, showScales]);
 
   const handleClick = () => {
     if (step === 1) {
@@ -131,10 +131,10 @@ const LeverPage = () => {
         </svg>
 
         <p>
-          그냥 들어 올릴 때: <motion.span>{normalWeight}</motion.span>g
+          그냥 들어 올릴 때: 힘 <motion.span>{normalWeight}</motion.span>
         </p>
         <p>
-          지레를 사용할 때: <motion.span>{inclinedWeight}</motion.span>g
+          지레를 사용할 때: 힘 <motion.span>{inclinedWeight}</motion.span>
         </p>
       </ScalesText>
 
@@ -181,19 +181,19 @@ const LeverPage = () => {
             )}
 
             {showArrowIcon && (
-              <motion.img
-                src={arrow}
-                alt="arrow"
-                className="arrow-icon1"
+              <motion.div
+                className="arrow-icon arrow-icon1"
                 initial={{ opacity: 0, y: 300 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 2 }}
-              />
+              >
+                <motion.img src={arrow} alt="화살표 이미지" />
+                <span>힘 30</span>
+              </motion.div>
             )}
           </>
         )}
 
-        {/* step2 rotate가 처음에 애니메이션으로 움직이는데 움직이지 않고 기본값으로 떠있어야 함 */}
         {step >= 2 && (
           <>
             <div className="lever-outer">
@@ -251,25 +251,20 @@ const LeverPage = () => {
               )}
 
               {showLeverIcons && (
-                <>
+                <motion.div
+                  className="arrow-icon arrow-icon2"
+                  initial={{ opacity: 0, y: -220 }}
+                  animate={{ opacity: 1, y: -80 }}
+                  transition={{ duration: 2 }}
+                >
+                  <span>힘 10</span>
                   <motion.img
                     src={arrow}
                     alt="arrow"
-                    className="arrow-icon2"
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 2 }}
+                    initial={{ rotate: 180 }}
                   />
-                  <motion.img
-                    src={arrow}
-                    alt="arrow"
-                    className="arrow-icon3"
-                    initial={{ opacity: 0, y: -50, rotate: 180 }}
-                    animate={{ opacity: 1, y: 0, rotate: 180 }}
-                    transition={{ duration: 2 }}
-                  />
-                </>
-              )}
+                </motion.div>
+              )} 
             </div>
           </>
         )}
@@ -291,7 +286,6 @@ const ScalesText = styled.div`
   box-sizing: border-box;
   border: 1px solid #5596cf;
   background: #e9f5ff;
-
 
   &::after {
     content: "";
@@ -376,11 +370,25 @@ const Content = styled.div`
     cursor: pointer;
   }
   .arrow-icon1 {
-    width: 60px;
     position: absolute;
-    left: 55%;
+    left: 58%;
     top: 35%;
-    z-index: -1;
+  }
+  .arrow-icon {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    img {
+      width: 100px;
+    }
+    span {
+      color: #255d8f;
+      font-family: "HakgyoansimDunggeunmisoTTF-B";
+      font-size: 34px;
+      white-space: nowrap;
+      margin: 10px 0;
+    }
   }
   .object {
     width: 130px;
@@ -426,20 +434,15 @@ const Content = styled.div`
     cursor: pointer;
   }
   .arrow-icon2 {
-    width: 60px;
-    position: absolute;
-    left: 0px;
-    top: 120px;
-    z-index: 3;
-    cursor: default;
-  }
-  .arrow-icon3 {
-    width: 60px;
     position: absolute;
     right: 0px;
     top: 40px;
     z-index: 3;
     cursor: default;
+
+    img {
+      width: 84px;
+    }
   }
 
   @media (max-width: 1280px) {

@@ -11,8 +11,6 @@ import useExperimentStore from "../store/experimentStore";
 
 const SlopePage = () => {
   const [step, setStep] = useState(1);
-  const [weightNormal, setWeightNormal] = useState(0);
-  const [weightInclined, setWeightInclined] = useState(0);
   const [objectMoved, setObjectMoved] = useState(false);
   const [showScales, setShowScales] = useState(true);
   const [showClickIcon, setShowClickIcon] = useState(false);
@@ -20,7 +18,9 @@ const SlopePage = () => {
   const [showClickIcon2, setShowClickIcon2] = useState(false);
   const [showArrowIcon2, setShowArrowIcon2] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
-  const setSlopeComplete = useExperimentStore((state) => state.setSlopeComplete);
+  const setSlopeComplete = useExperimentStore(
+    (state) => state.setSlopeComplete
+  );
 
   const normalWeightMotion = useMotionValue(0);
   const normalWeight = useTransform(normalWeightMotion, (latest) => {
@@ -59,28 +59,29 @@ const SlopePage = () => {
       setShowArrowIcon(true);
       setTimeout(() => {
         animate(normalWeightMotion, 240, { duration: 1.5 });
-        setWeightNormal(240);
         setTimeout(() => {
-          setStep(2);
-          setObjectMoved(false);
           setShowArrowIcon(false);
-        }, 1500);
-      }, 1000);
+          inclinedWeightMotion.set(0);
+          setTimeout(() => {
+            setStep(2);
+            setObjectMoved(false);
+          }, 10);
+        }, 3000);
+      }, 500);
     } else if (step === 2) {
       setShowClickIcon2(false);
       setObjectMoved(true);
       setShowArrowIcon2(true);
       setTimeout(() => {
         animate(inclinedWeightMotion, 120, { duration: 1.5 });
-        setWeightInclined(120);
         setTimeout(() => {
           setStep(3);
           setObjectMoved(false);
           setShowArrowIcon2(false);
           setIsComplete(true);
           setSlopeComplete(true);
-        }, 1500);
-      }, 1000);
+        }, 3000);
+      }, 500);
     }
   };
 
@@ -89,22 +90,21 @@ const SlopePage = () => {
       title="힘과 우리의 생활 - 탐구 3 &lt;빗면을 이용해 물건 들기&gt;"
       text={
         <motion.span
-          key={isComplete ? 'answer' : 'question'}
+          key={isComplete ? "answer" : "question"}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ 
+          transition={{
             duration: 2,
-            ease: "easeIn"
+            ease: "easeIn",
           }}
-          style={{ 
+          style={{
             whiteSpace: "pre-line",
-            display: "inline-block"
+            display: "inline-block",
           }}
         >
-          {isComplete 
+          {isComplete
             ? "빗면을 사용하면 물체를 들어 올리는데 더 적은 힘이 든다는 걸 알 수 있어요."
-            : "물체를 위로 들어 올리면서 무게가 얼마인지 확인해 보세요."
-          }
+            : "물체를 위로 들어 올리면서 무게가 얼마인지 확인해 보세요."}
         </motion.span>
       }
       isComplete={isComplete}
@@ -123,9 +123,13 @@ const SlopePage = () => {
             fill="white"
           />
         </svg>
-        
-        <p>그냥 들어 올릴 때: <motion.span>{normalWeight}</motion.span>g</p>
-        <p>빗면을 사용할 때: <motion.span>{inclinedWeight}</motion.span>g</p>
+
+        <p>
+          그냥 들어 올릴 때: 힘 <motion.span>{normalWeight}</motion.span>
+        </p>
+        <p>
+          빗면을 사용할 때: 힘 <motion.span>{inclinedWeight}</motion.span>
+        </p>
       </ScalesText>
 
       <Content step={step}>
@@ -144,7 +148,11 @@ const SlopePage = () => {
                     : { x: -128, y: 30, rotate: 60 }
                   : { x: 258, y: -194, rotate: 60 }
               }
-              transition={step === 2 && !objectMoved ? { duration: 0 } : { duration: 2, ease: "easeInOut" }}
+              transition={
+                step === 2 && !objectMoved
+                  ? { duration: 0 }
+                  : { duration: 2, ease: "easeInOut" }
+              }
               onClick={handleClick}
             >
               <motion.div
@@ -152,7 +160,38 @@ const SlopePage = () => {
                 style={{ backgroundImage: `url(${objectSpringImg})` }}
                 animate={{ opacity: step === 3 ? 0 : 1 }}
                 transition={{ duration: 0.5 }}
-              />
+              >
+                {step === 1 && (
+                  <motion.span
+                    style={{
+                      position: "absolute",
+                      top: "22%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                      fontSize: "26px",
+                      fontWeight: "bold",
+                      color: "#0c3554",
+                    }}
+                  >
+                    {normalWeight}
+                  </motion.span>
+                )}
+                {step === 2 && (
+                  <motion.span
+                    style={{
+                      position: "absolute",
+                      top: "22%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                      fontSize: "26px",
+                      fontWeight: "bold",
+                      color: "#0c3554",
+                    }}
+                  >
+                    {inclinedWeight}
+                  </motion.span>
+                )}
+              </motion.div>
               <motion.div
                 className="object-image"
                 style={{ backgroundImage: `url(${objectImg})` }}
@@ -361,7 +400,7 @@ const Content = styled.div`
     cursor: pointer;
   }
   .arrow-icon1 {
-    width: 60px;
+    width: 100px;
     position: absolute;
     left: 55%;
     top: 35%;
@@ -376,10 +415,10 @@ const Content = styled.div`
     transform: rotate(60deg);
   }
   .arrow-icon2 {
-    width: 60px;
+    width: 80px;
     position: absolute;
     left: 42%;
-    bottom: 15%;
+    bottom: 13%;
     z-index: 1;
   }
   @media (max-width: 1280px) {
